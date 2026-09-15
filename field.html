@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b5fa5">
+  <title>ALTEZ Werfapp</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./altez-icon.svg">
+  <style>
+:root{--blue:#0b5fa5;--blue2:#083f72;--ink:#12243a;--muted:#66788a;--line:#dbe3ea;--bg:#f4f7fa;--card:#fff;--ok:#159a65;--warn:#f0a202;--danger:#d64545;--shadow:0 8px 26px rgba(20,44,70,.09)}
+*{box-sizing:border-box}html,body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:650;cursor:pointer}.btn.primary{background:var(--blue);color:#fff}.btn.secondary{background:#eaf2f8;color:var(--blue2)}.btn.danger{background:#fee9e9;color:#a91f1f}.btn.ghost{background:transparent;color:var(--blue)}.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700}.pill.ok{background:#e5f6ef;color:#08734b}.pill.warn{background:#fff1d6;color:#9b6200}.pill.danger{background:#fde4e4;color:#aa2020}.pill.neutral{background:#edf1f4;color:#52606d}.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.muted{color:var(--muted)}.hidden{display:none!important}.toast{position:fixed;right:20px;bottom:20px;background:#102a43;color:#fff;padding:12px 16px;border-radius:9px;box-shadow:var(--shadow);z-index:9999;max-width:360px}.toast.error{background:#9b2c2c}@media(max-width:700px){.desktop-only{display:none!important}}
+
+body{background:#eef3f7;min-height:100vh}.mobile-head{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding:12px max(14px,env(safe-area-inset-right)) 12px max(14px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between}.brand-mini{display:flex;align-items:center;gap:10px}.brand-mini img{width:38px;height:38px}.brand-mini strong{display:block;font-size:16px}.brand-mini span{display:block;color:var(--muted);font-size:11px;margin-top:2px;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.field-main{max-width:760px;margin:auto;padding:14px 14px 80px}.date-nav{display:grid;grid-template-columns:52px 1fr 52px;overflow:hidden;margin-bottom:12px}.date-arrow,.date-center{border:0;background:#fff;cursor:pointer}.date-arrow{font-size:24px;padding:16px 0}.date-center{padding:10px}.date-center strong,.date-center span{display:block}.date-center strong{font-size:18px}.date-center span{font-size:12px;color:var(--muted);margin-top:3px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.sum-card{padding:11px 8px;text-align:center}.sum-card .num{font-weight:800;font-size:22px}.sum-card .lbl{font-size:10px;color:var(--muted);margin-top:2px}.plan-block{margin-bottom:12px}.category-head{display:flex;align-items:center;gap:8px;margin:0 2px 7px;font-weight:800;font-size:14px}.category-dot{width:11px;height:11px;border-radius:3px}.delivery{padding:14px;margin-bottom:8px}.delivery-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.delivery-code{font-size:21px;font-weight:850}.delivery-title{font-size:12px;color:var(--muted);margin-top:3px}.status-note{font-size:11px;color:var(--muted);text-align:right}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}.big-action{min-height:56px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font-weight:800;cursor:pointer;color:#284158}.big-action.done{background:#e5f6ef;border-color:#b6e2d1;color:#08734b}.big-action.mount.done{background:#dfeeff;border-color:#b5d4f2;color:#0c5e9f}.issue-row{display:flex;gap:8px;margin-top:8px}.issue-btn{width:100%;border:1px dashed #d7a6a6;border-radius:9px;background:#fff6f6;color:#a43535;padding:9px;font-weight:700;cursor:pointer}.issue-text{margin-top:8px;background:#fff0f0;color:#8e2929;border-radius:8px;padding:9px;font-size:12px}.empty{padding:28px 16px;text-align:center;color:var(--muted)}.offline{background:#fff1d6;color:#7e5200;border:1px solid #f4d69a;border-radius:9px;padding:10px 12px;font-size:12px;margin-bottom:12px}dialog{border:0;border-radius:14px;width:min(440px,92vw);padding:0;box-shadow:0 24px 70px rgba(0,0,0,.28)}dialog::backdrop{background:rgba(8,28,46,.55)}#settingsForm{padding:18px}.dialog-head{display:flex;align-items:center;justify-content:space-between}.dialog-head h2{margin:0}.close{border:0;background:transparent;font-size:26px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}#settingsForm label{display:block;margin-top:13px;font-size:12px;font-weight:700}#settingsForm input,#settingsForm select{display:block;width:100%;margin-top:5px;padding:11px;border:1px solid var(--line);border-radius:8px;background:#fff}@media(min-width:700px){.field-main{padding-top:22px}.delivery{padding:17px}.big-action{font-size:16px}}
+
+</style>
+</head>
+<body>
+  <header class="mobile-head">
+    <div class="brand-mini"><img src="./altez-icon.svg" alt=""><div><strong>ALTEZ Werfapp</strong><span id="projectName">Project laden…</span></div></div>
+    <button class="btn secondary" id="settingsBtn">Instellingen</button>
+  </header>
+  <main class="field-main">
+    <div class="date-nav card">
+      <button class="date-arrow" id="prevDay">←</button>
+      <button class="date-center" id="pickDate"><strong id="dayLabel">Vandaag</strong><span id="dateLabel"></span></button>
+      <button class="date-arrow" id="nextDay">→</button>
+      <input type="date" id="dateInput" class="hidden">
+    </div>
+    <div id="offlineBanner" class="offline hidden">Offline — wijzigingen worden bewaard en later gesynchroniseerd.</div>
+    <section id="summary" class="summary-grid"></section>
+    <section id="planList"></section>
+  </main>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" id="settingsForm">
+      <div class="dialog-head"><h2>Werfapp instellingen</h2><button value="cancel" class="close">×</button></div>
+      <label>Naam ploegbaas<input id="workerName" placeholder="Naam"></label>
+      <label>Project<select id="projectSelect"></select></label>
+      <div class="dialog-actions"><button value="cancel" class="btn secondary">Annuleren</button><button value="default" class="btn primary" id="saveSettings">Opslaan</button></div>
+    </form>
+  </dialog>
+
+  <script>
+(function(){
+  const KEY='altez_dagplanning_github_db_v1';
+  const now=()=>new Date().toISOString();
+  const uid=p=>`${p}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,8)}`;
+  const clone=o=>JSON.parse(JSON.stringify(o));
+  const seed={
+    projects:[{id:'demo-project',trimbleProjectId:'',name:'Project Test - Haven Antwerpen',active:true}],
+    categories:[
+      {id:'steel',name:'Staal',color:'#a9d18e',textColor:'#17320d'},
+      {id:'concrete',name:'Betonwanden',color:'#ffc000',textColor:'#3b2b00'},
+      {id:'facade',name:'Gevelwanden',color:'#7fb3e6',textColor:'#0f2d4a'},
+      {id:'slabs',name:'Welfsels',color:'#7fb3e6',textColor:'#0f2d4a'},
+      {id:'silex',name:'Silex',color:'#fff97d',textColor:'#3f3a00'},
+      {id:'hydroos',name:'Hydroos onroerend goed',color:'#e9ecef',textColor:'#2f3438'},
+      {id:'material',name:'Magazijnmateriaal',color:'#d9e2f3',textColor:'#26354a'},
+      {id:'other',name:'Andere',color:'#dedede',textColor:'#333333'}
+    ],
+    plans:[
+      {id:'plan_today_steel',projectId:'demo-project',date:'2026-09-15',categoryId:'steel',title:'Staal V5 + V6',notes:'',deliveries:[
+        {id:'del_today_v5',code:'V5',deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null},
+        {id:'del_today_v6',code:'V6',deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null}
+      ],createdAt:'2026-09-14T08:00:00.000Z',updatedAt:'2026-09-14T08:00:00.000Z'},
+      {id:'plan_today_concrete',projectId:'demo-project',date:'2026-09-15',categoryId:'concrete',title:'Betonwanden V11 + V12',notes:'',deliveries:[
+        {id:'del_today_v11',code:'V11',deliveredAt:'2026-09-15T06:45:00.000Z',deliveredBy:'Ploegbaas Demo',mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null},
+        {id:'del_today_v12',code:'V12',deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null}
+      ],createdAt:'2026-09-14T08:00:00.000Z',updatedAt:'2026-09-15T06:45:00.000Z'},
+      {id:'plan_steel_1',projectId:'demo-project',date:'2026-09-18',categoryId:'steel',title:'Staal V1 + 2 + magazijnmateriaal',notes:'',deliveries:[
+        {id:'del_v1',code:'V1',deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null},
+        {id:'del_v2',code:'V2',deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null}
+      ],createdAt:'2026-09-10T08:00:00.000Z',updatedAt:'2026-09-10T08:00:00.000Z'},
+      {id:'plan_silex_1',projectId:'demo-project',date:'2026-09-22',categoryId:'silex',title:'Silex V1',notes:'',deliveries:[
+        {id:'del_silex1',code:'V1',deliveredAt:'2026-09-22T06:58:00.000Z',deliveredBy:'Ploegbaas Demo',mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null}
+      ],createdAt:'2026-09-10T08:00:00.000Z',updatedAt:'2026-09-22T06:58:00.000Z'},
+      {id:'plan_concrete_1',projectId:'demo-project',date:'2026-09-22',categoryId:'concrete',title:'Betonwanden V1 + 2 + 6',notes:'',deliveries:[
+        {id:'del_b1',code:'V1',deliveredAt:'2026-09-22T07:30:00.000Z',deliveredBy:'Ploegbaas Demo',mountedAt:'2026-09-22T10:45:00.000Z',mountedBy:'Ploegbaas Demo',issue:null,issueAt:null,issueBy:null},
+        {id:'del_b2',code:'V2',deliveredAt:'2026-09-22T09:12:00.000Z',deliveredBy:'Ploegbaas Demo',mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null},
+        {id:'del_b6',code:'V6',deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:'Levering 1 uur vertraagd',issueAt:'2026-09-22T09:20:00.000Z',issueBy:'Ploegbaas Demo'}
+      ],createdAt:'2026-09-10T08:00:00.000Z',updatedAt:'2026-09-22T09:20:00.000Z'},
+      {id:'plan_facade_1',projectId:'demo-project',date:'2026-09-24',categoryId:'facade',title:'Gevelwanden V101 + 102 + 103 + 104 + 105',notes:'',deliveries:['V101','V102','V103','V104','V105'].map((code,i)=>({id:`del_f10${i+1}`,code,deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null})),createdAt:'2026-09-10T08:00:00.000Z',updatedAt:'2026-09-10T08:00:00.000Z'},
+      {id:'plan_facade_2',projectId:'demo-project',date:'2026-09-25',categoryId:'facade',title:'Gevelwanden V201',notes:'',deliveries:[{id:'del_f201',code:'V201',deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null}],createdAt:'2026-09-10T08:00:00.000Z',updatedAt:'2026-09-10T08:00:00.000Z'},
+      {id:'plan_steel_4',projectId:'demo-project',date:'2026-09-25',categoryId:'steel',title:'Staal V4',notes:'',deliveries:[{id:'del_s4',code:'V4',deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null}],createdAt:'2026-09-10T08:00:00.000Z',updatedAt:'2026-09-10T08:00:00.000Z'}
+    ],
+    events:[]
+  };
+  function load(){
+    try{const raw=localStorage.getItem(KEY);if(raw)return JSON.parse(raw)}catch(e){}
+    const db=clone(seed);save(db);return db;
+  }
+  function save(db){localStorage.setItem(KEY,JSON.stringify(db));window.dispatchEvent(new CustomEvent('altez-store-changed'))}
+  function audit(db,e){db.events.unshift({id:uid('evt'),at:now(),...e});db.events=db.events.slice(0,1000)}
+  function body(opts){if(!opts||opts.body==null)return {};if(typeof opts.body==='string')return JSON.parse(opts.body||'{}');return opts.body}
+  function response(v){return Promise.resolve(clone(v))}
+  function api(rawUrl,opts={}){
+    const method=(opts.method||'GET').toUpperCase();
+    const url=new URL(rawUrl,location.origin);let db=load();
+    if(method==='GET'&&url.pathname==='/api/projects')return response(db.projects);
+    if(method==='GET'&&url.pathname==='/api/categories')return response(db.categories);
+    if(method==='POST'&&url.pathname==='/api/projects/ensure'){
+      const b=body(opts);let p=db.projects.find(x=>x.trimbleProjectId&&x.trimbleProjectId===b.trimbleProjectId);
+      if(!p){p={id:uid('prj'),trimbleProjectId:b.trimbleProjectId||'',name:b.name||'Trimble project',active:true};db.projects.push(p);audit(db,{projectId:p.id,type:'project_linked',message:`Trimble project gekoppeld: ${p.name}`,user:b.user||'Trimble Connect'});save(db)}
+      return response(p);
+    }
+    if(method==='GET'&&url.pathname==='/api/plans'){
+      let plans=db.plans.slice();const projectId=url.searchParams.get('projectId'),from=url.searchParams.get('from'),to=url.searchParams.get('to');
+      if(projectId)plans=plans.filter(p=>p.projectId===projectId);if(from)plans=plans.filter(p=>p.date>=from);if(to)plans=plans.filter(p=>p.date<=to);
+      plans.sort((a,b)=>a.date.localeCompare(b.date)||a.title.localeCompare(b.title));return response(plans);
+    }
+    if(method==='POST'&&url.pathname==='/api/plans'){
+      const b=body(opts);const deliveries=(b.deliveries||[]).map(d=>({id:d.id||uid('del'),code:d.code,deliveredAt:d.deliveredAt||null,deliveredBy:d.deliveredBy||null,mountedAt:d.mountedAt||null,mountedBy:d.mountedBy||null,issue:d.issue||null,issueAt:d.issueAt||null,issueBy:d.issueBy||null}));
+      const p={id:uid('plan'),projectId:b.projectId,date:b.date,categoryId:b.categoryId,title:(b.title||'').trim()||deliveries.map(d=>d.code).join(' + '),notes:(b.notes||'').trim(),deliveries,createdAt:now(),updatedAt:now()};db.plans.push(p);audit(db,{projectId:p.projectId,type:'plan_created',message:`${p.title} gepland op ${p.date}`,user:b.user||'Planner',entityId:p.id});save(db);return response(p);
+    }
+    const pm=url.pathname.match(/^\/api\/plans\/([^/]+)$/);
+    if(pm&&method==='PUT'){
+      const p=db.plans.find(x=>x.id===pm[1]);if(!p)return Promise.reject(new Error('Planning niet gevonden'));const b=body(opts);const before={date:p.date,title:p.title,categoryId:p.categoryId};
+      if(b.date)p.date=b.date;if(b.categoryId)p.categoryId=b.categoryId;if(typeof b.title==='string')p.title=b.title.trim();if(typeof b.notes==='string')p.notes=b.notes.trim();
+      if(Array.isArray(b.deliveries)){const old=new Map(p.deliveries.map(d=>[d.code,d]));p.deliveries=b.deliveries.map(d=>old.has(d.code)?{...old.get(d.code),...d}:{id:uid('del'),code:d.code,deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null})}
+      p.updatedAt=now();audit(db,{projectId:p.projectId,type:'plan_updated',message:before.date!==p.date?`${p.title} verplaatst: ${before.date} → ${p.date}`:`${p.title} aangepast`,user:b.user||'Planner',entityId:p.id});save(db);return response(p);
+    }
+    if(pm&&method==='DELETE'){
+      const i=db.plans.findIndex(x=>x.id===pm[1]);if(i<0)return Promise.reject(new Error('Planning niet gevonden'));const [p]=db.plans.splice(i,1);const b=body(opts);audit(db,{projectId:p.projectId,type:'plan_deleted',message:`${p.title} verwijderd van ${p.date}`,user:b.user||'Planner',entityId:p.id});save(db);return response({ok:true});
+    }
+    const dm=url.pathname.match(/^\/api\/deliveries\/([^/]+)\/status$/);
+    if(dm&&method==='POST'){
+      const b=body(opts);let plan=null,d=null;for(const p of db.plans){const hit=p.deliveries.find(x=>x.id===dm[1]);if(hit){plan=p;d=hit;break}}if(!d)return Promise.reject(new Error('Vracht niet gevonden'));
+      const user=b.user||'Ploegbaas',at=b.at||now();
+      if(b.status==='delivered'){const v=b.value!==false;d.deliveredAt=v?at:null;d.deliveredBy=v?user:null;if(!v){d.mountedAt=null;d.mountedBy=null}audit(db,{projectId:plan.projectId,type:v?'delivered':'delivered_undone',message:`${d.code} ${v?'geleverd':'levering ongedaan gemaakt'}`,user,entityId:d.id})}
+      else if(b.status==='mounted'){const v=b.value!==false;if(v&&!d.deliveredAt){d.deliveredAt=at;d.deliveredBy=user}d.mountedAt=v?at:null;d.mountedBy=v?user:null;audit(db,{projectId:plan.projectId,type:v?'mounted':'mounted_undone',message:`${d.code} ${v?'gemonteerd':'montage ongedaan gemaakt'}`,user,entityId:d.id})}
+      else if(b.status==='issue'){d.issue=(b.message||'').trim()||null;d.issueAt=d.issue?at:null;d.issueBy=d.issue?user:null;audit(db,{projectId:plan.projectId,type:d.issue?'issue':'issue_cleared',message:d.issue?`${d.code}: probleem - ${d.issue}`:`${d.code}: probleem opgelost`,user,entityId:d.id})}
+      plan.updatedAt=now();save(db);return response({plan,d});
+    }
+    if(method==='GET'&&url.pathname==='/api/events'){
+      let e=db.events.slice();const p=url.searchParams.get('projectId'),limit=Math.min(Number(url.searchParams.get('limit')||100),500);if(p)e=e.filter(x=>x.projectId===p);return response(e.slice(0,limit));
+    }
+    if(method==='GET'&&url.pathname==='/api/dashboard'){
+      const projectId=url.searchParams.get('projectId'),today=url.searchParams.get('date')||new Date().toISOString().slice(0,10);const plans=db.plans.filter(p=>!projectId||p.projectId===projectId);const deliveries=plans.flatMap(p=>p.deliveries.map(d=>({...d,date:p.date,planId:p.id,title:p.title,categoryId:p.categoryId})));const todayD=deliveries.filter(d=>d.date===today);const metrics={plannedToday:todayD.length,deliveredToday:todayD.filter(d=>d.deliveredAt).length,mountedToday:todayD.filter(d=>d.mountedAt).length,issuesOpen:deliveries.filter(d=>d.issue).length,overdue:deliveries.filter(d=>d.date<today&&!d.deliveredAt).length,totalPlanned:deliveries.length,totalDelivered:deliveries.filter(d=>d.deliveredAt).length,totalMounted:deliveries.filter(d=>d.mountedAt).length};return response({date:today,metrics,deliveries});
+    }
+    if(method==='POST'&&url.pathname==='/api/reset-demo'){db=clone(seed);save(db);return response({ok:true});}
+    return Promise.reject(new Error('API endpoint niet gevonden'));
+  }
+  window.AltezStore={api,reset:()=>{save(clone(seed));location.reload()},key:KEY};
+})();
+
+</script>
+  <script>
+const state={projects:[],categories:[],projectId:null,date:new Date(),plans:[],worker:localStorage.getItem('altez_worker')||'Ploegbaas Demo'};
+const $=s=>document.querySelector(s);
+const api=(url,opts={})=>window.AltezStore.api(url,opts);
+function isoDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function parseDate(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function plusDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+function fmtTime(s){return s?new Date(s).toLocaleTimeString('nl-BE',{hour:'2-digit',minute:'2-digit'}):''}
+function cat(id){return state.categories.find(c=>c.id===id)||{name:'Andere',color:'#ddd'}}
+function project(){return state.projects.find(p=>p.id===state.projectId)}
+function escapeHtml(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function toast(msg,err=false){const e=document.createElement('div');e.className='toast'+(err?' error':'');e.textContent=msg;document.body.appendChild(e);setTimeout(()=>e.remove(),2400)}
+function queue(){return JSON.parse(localStorage.getItem('altez_offline_queue')||'[]')}
+function saveQueue(q){localStorage.setItem('altez_offline_queue',JSON.stringify(q))}
+async function postStatus(deliveryId,payload){
+  try{return await api(`/api/deliveries/${deliveryId}/status`,{method:'POST',body:JSON.stringify(payload)})}
+  catch(e){if(!navigator.onLine||e instanceof TypeError){const q=queue();q.push({deliveryId,payload:{...payload,at:new Date().toISOString()}});saveQueue(q);toast('Offline opgeslagen. Wordt later gesynchroniseerd.');return null}throw e}
+}
+async function flushQueue(){if(!navigator.onLine)return;const q=queue();if(!q.length)return;const remain=[];for(const item of q){try{await api(`/api/deliveries/${item.deliveryId}/status`,{method:'POST',body:JSON.stringify(item.payload)})}catch(e){remain.push(item)}}saveQueue(remain);if(remain.length===0){toast('Offline wijzigingen gesynchroniseerd');await load()}}
+async function boot(){
+  state.categories=await api('/api/categories');state.projects=await api('/api/projects');
+  const q=new URLSearchParams(location.search);const requested=q.get('project')||localStorage.getItem('altez_project');state.projectId=state.projects.some(p=>p.id===requested)?requested:state.projects[0]?.id;
+  $('#workerName').value=state.worker;$('#projectSelect').innerHTML=state.projects.map(p=>`<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');$('#projectSelect').value=state.projectId;
+  wire();updateOnline();await load();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(console.warn);flushQueue();
+}
+async function load(){const ds=isoDate(state.date);state.plans=await api(`/api/plans?projectId=${encodeURIComponent(state.projectId)}&from=${ds}&to=${ds}`);render()}
+function render(){const p=project();$('#projectName').textContent=p?.name||'';const ds=isoDate(state.date),today=isoDate(new Date());$('#dayLabel').textContent=ds===today?'Vandaag':state.date.toLocaleDateString('nl-BE',{weekday:'long'});$('#dateLabel').textContent=state.date.toLocaleDateString('nl-BE',{day:'numeric',month:'long',year:'numeric'});$('#dateInput').value=ds;const dels=state.plans.flatMap(pl=>pl.deliveries.map(d=>({...d,plan:pl})));$('#summary').innerHTML=`<div class="card sum-card"><div class="num">${dels.length}</div><div class="lbl">gepland</div></div><div class="card sum-card"><div class="num">${dels.filter(d=>d.deliveredAt).length}</div><div class="lbl">geleverd</div></div><div class="card sum-card"><div class="num">${dels.filter(d=>d.mountedAt).length}</div><div class="lbl">gemonteerd</div></div>`;
+  const grouped=new Map();for(const pl of state.plans){if(!grouped.has(pl.categoryId))grouped.set(pl.categoryId,[]);grouped.get(pl.categoryId).push(pl)};const root=$('#planList');root.innerHTML='';if(!state.plans.length){root.innerHTML='<div class="card empty">Geen vrachten gepland voor deze dag.</div>';return}
+  for(const [cid,plans] of grouped){const c=cat(cid),sec=document.createElement('div');sec.className='plan-block';sec.innerHTML=`<div class="category-head"><i class="category-dot" style="background:${c.color}"></i>${escapeHtml(c.name)}</div>`;for(const pl of plans){for(const d of pl.deliveries)sec.appendChild(deliveryCard(d,pl))}root.appendChild(sec)}
+}
+function deliveryCard(d,pl){const el=document.createElement('div');el.className='card delivery';el.innerHTML=`<div class="delivery-top"><div><div class="delivery-code">${escapeHtml(d.code)}</div><div class="delivery-title">${escapeHtml(pl.title)}</div></div><div class="status-note">${d.mountedAt?`Gemonteerd ${fmtTime(d.mountedAt)}`:d.deliveredAt?`Geleverd ${fmtTime(d.deliveredAt)}`:'Nog niet geleverd'}</div></div><div class="actions"><button class="big-action deliver ${d.deliveredAt?'done':''}">${d.deliveredAt?'✓ Geleverd':'Geleverd'}</button><button class="big-action mount ${d.mountedAt?'done':''}">${d.mountedAt?'✓ Gemonteerd':'Gemonteerd'}</button></div><div class="issue-row"><button class="issue-btn">${d.issue?'Probleem aanpassen':'⚠ Probleem melden'}</button></div>${d.issue?`<div class="issue-text">⚠ ${escapeHtml(d.issue)}</div>`:''}`;
+  el.querySelector('.deliver').onclick=async()=>{const value=!d.deliveredAt;if(!value&&!confirm(`${d.code}: levering ongedaan maken?`))return;await change(d,'delivered',value)};el.querySelector('.mount').onclick=async()=>{const value=!d.mountedAt;if(!value&&!confirm(`${d.code}: montage ongedaan maken?`))return;await change(d,'mounted',value)};el.querySelector('.issue-btn').onclick=async()=>{const msg=prompt(`${d.code} - probleem/opmerking${d.issue?' (leegmaken om te wissen)':''}`,d.issue||'');if(msg===null)return;await change(d,'issue',true,msg)};return el
+}
+async function change(d,status,value,message=''){try{const r=await postStatus(d.id,{status,value,message,user:state.worker});if(r){await load()}else{if(status==='delivered'){d.deliveredAt=value?new Date().toISOString():null;if(!value)d.mountedAt=null}else if(status==='mounted'){if(value&&!d.deliveredAt)d.deliveredAt=new Date().toISOString();d.mountedAt=value?new Date().toISOString():null}else if(status==='issue'){d.issue=message||null}render()}}catch(e){toast(e.message,true)}}
+function wire(){
+  $('#prevDay').onclick=async()=>{state.date=plusDays(state.date,-1);await load()};$('#nextDay').onclick=async()=>{state.date=plusDays(state.date,1);await load()};$('#pickDate').onclick=()=>$('#dateInput').showPicker?$('#dateInput').showPicker():$('#dateInput').click();$('#dateInput').onchange=async e=>{state.date=parseDate(e.target.value);await load()};$('#settingsBtn').onclick=()=>$('#settingsDialog').showModal();$('#saveSettings').onclick=async e=>{e.preventDefault();state.worker=$('#workerName').value.trim()||'Ploegbaas';state.projectId=$('#projectSelect').value;localStorage.setItem('altez_worker',state.worker);localStorage.setItem('altez_project',state.projectId);$('#settingsDialog').close();await load()};window.addEventListener('online',()=>{updateOnline();flushQueue()});window.addEventListener('offline',updateOnline);window.addEventListener('altez-store-changed',()=>load().catch(()=>{}));window.addEventListener('storage',e=>{if(e.key===window.AltezStore.key)load().catch(()=>{})});setInterval(()=>load().catch(()=>{}),20000)
+}
+function updateOnline(){$('#offlineBanner').classList.toggle('hidden',navigator.onLine);}
+boot().catch(e=>{console.error(e);toast(e.message,true)});
+
+</script>
+</body>
+</html>
