@@ -1,69 +1,4992 @@
-<section id="tab-dashboard" class="tab-panel hidden">
-  <div class="dashboard-filter card">
-    <div>
-      <div class="dashboard-filter-title">Periode komende planning</div>
-      <div class="chart-sub" id="rangeDescription">Volgende 30 dagen</div>
-    </div>
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ALTEZ Dagplanning</title>
+  <link rel="icon" href="./altez-icon.svg">
 
-    <div class="range-buttons" id="dashboardRange">
-      <button type="button" class="range-btn" data-range="7">7 dagen</button>
-      <button type="button" class="range-btn active" data-range="30">30 dagen</button>
-      <button type="button" class="range-btn" data-range="all">Alles</button>
-    </div>
-  </div>
+  <style>
+:root{
+  --blue:#0b5fa5;
+  --blue2:#083f72;
+  --ink:#12243a;
+  --muted:#66788a;
+  --line:#dbe3ea;
+  --bg:#f4f7fa;
+  --card:#fff;
+  --ok:#159a65;
+  --warn:#f0a202;
+  --danger:#d64545;
+  --shadow:0 8px 26px rgba(20,44,70,.09)
+}
 
-  <div class="kpis" id="kpis"></div>
+*{box-sizing:border-box}
 
-  <div class="dashboard-grid">
-    <div class="card block">
-      <div class="block-head">
-        <h2>Vandaag</h2>
-        <span id="dashDate"></span>
-      </div>
-      <div id="todayTable"></div>
-    </div>
+html,body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink)
+}
 
-    <div class="card block">
-      <div class="block-head">
-        <h2>Aandachtspunten</h2>
-      </div>
-      <div id="attention"></div>
-    </div>
-  </div>
+button,input,select,textarea{font:inherit}
 
-  <div class="dashboard-secondary">
-    <div class="card block">
-      <div class="block-head">
-        <div>
-          <h2>Volgende geplande dagen</h2>
-          <div class="chart-sub" id="upcomingSubtitle">
-            De eerstvolgende 10 geplande dagen binnen de gekozen periode
-          </div>
-        </div>
-      </div>
-      <div id="upcomingDays" class="upcoming-days"></div>
-    </div>
+.btn{
+  border:0;
+  border-radius:8px;
+  padding:10px 14px;
+  font-weight:650;
+  cursor:pointer
+}
 
-    <div class="card block">
-      <div class="block-head">
-        <div>
-          <h2>Status komende planning</h2>
-          <div class="chart-sub">Verdeling over dezelfde geplande dagen</div>
-        </div>
-      </div>
-      <div id="statusDonut"></div>
-    </div>
-  </div>
+.btn.primary{
+  background:var(--blue);
+  color:#fff
+}
 
-  <div class="card block dashboard-chart">
-    <div class="block-head">
+.btn.secondary{
+  background:#eaf2f8;
+  color:var(--blue2)
+}
+
+.btn.danger{
+  background:#fee9e9;
+  color:#a91f1f
+}
+
+.btn.ghost{
+  background:transparent;
+  color:var(--blue)
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  padding:4px 9px;
+  font-size:12px;
+  font-weight:700
+}
+
+.pill.ok{
+  background:#e5f6ef;
+  color:#08734b
+}
+
+.pill.warn{
+  background:#fff1d6;
+  color:#9b6200
+}
+
+.pill.danger{
+  background:#fde4e4;
+  color:#aa2020
+}
+
+.pill.neutral{
+  background:#edf1f4;
+  color:#52606d
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:var(--shadow)
+}
+
+.muted{color:var(--muted)}
+
+.hidden{display:none!important}
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#102a43;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:9px;
+  box-shadow:var(--shadow);
+  z-index:9999;
+  max-width:360px
+}
+
+.toast.error{background:#9b2c2c}
+
+body{min-width:980px}
+
+.app-shell{
+  display:flex;
+  min-height:100vh
+}
+
+.side{
+  width:218px;
+  background:linear-gradient(180deg,#0c3155,#0b4c80);
+  color:#fff;
+  padding:18px 12px;
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  inset:0 auto 0 0
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:5px 8px 22px
+}
+
+.brand img{
+  width:38px;
+  height:38px
+}
+
+.brand strong{
+  font-size:19px;
+  display:block
+}
+
+.brand span{
+  font-size:12px;
+  opacity:.78
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#dbeaf7;
+  padding:11px 12px;
+  border-radius:8px;
+  text-align:left;
+  cursor:pointer;
+  margin-bottom:3px
+}
+
+.nav.active,.nav:hover{
+  background:rgba(255,255,255,.13);
+  color:#fff
+}
+
+.side-foot{
+  margin-top:auto;
+  padding:12px 8px;
+  font-size:11px;
+  opacity:.75
+}
+
+.main{
+  margin-left:218px;
+  padding:22px 26px;
+  width:calc(100% - 218px)
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:18px
+}
+
+.topbar h1{
+  margin:0 0 4px;
+  font-size:28px
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+  align-items:center
+}
+
+.top-actions select{
+  min-width:240px;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:white
+}
+
+.toolbar{
+  padding:10px 14px;
+  margin-bottom:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px
+}
+
+.toolbar-group{
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+
+.toolbar label{
+  font-size:13px;
+  color:var(--muted)
+}
+
+.toolbar input{
+  margin-left:6px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:7px
+}
+
+.legend{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  justify-content:flex-end
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:11px;
+  color:var(--muted)
+}
+
+.legend-dot{
+  width:10px;
+  height:10px;
+  border-radius:3px
+}
+
+.planner{overflow:hidden}
+
+.weekday-head{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  background:#fff;
+  border-bottom:1px solid var(--line)
+}
+
+.weekday-head>div{
+  text-align:center;
+  padding:10px;
+  border-right:1px solid var(--line);
+  font-size:13px;
+  color:#38506a
+}
+
+.weekday-head>div:last-child{border-right:0}
+
+.week-row{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  min-height:136px;
+  border-bottom:1px solid var(--line)
+}
+
+.week-row:last-child{border-bottom:0}
+
+.day-cell{
+  padding:0 5px 8px;
+  border-right:1px solid var(--line);
+  min-width:0;
+  background:#fff;
+  transition:.15s
+}
+
+.day-cell:last-child{border-right:0}
+
+.day-cell.drag-over{background:#eef7ff}
+
+.day-date{
+  height:25px;
+  background:#e9e9e9;
+  margin:0 -5px 8px;
+  padding:4px 7px;
+  text-align:right;
+  font-size:12px;
+  color:#26384a
+}
+
+.day-date.today{
+  background:#d8eafb;
+  color:#0a518c;
+  font-weight:800
+}
+
+.plan-card{
+  border-radius:3px;
+  margin:5px 0;
+  padding:8px 9px;
+  box-shadow:0 1px 2px rgba(0,0,0,.08);
+  cursor:pointer;
+  border:1px solid rgba(0,0,0,.05);
+  font-size:13px;
+  line-height:1.25
+}
+
+.plan-card:hover{
+  outline:2px solid rgba(11,95,165,.18)
+}
+
+.plan-title{font-weight:650}
+
+.plan-meta{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:6px;
+  font-size:10px
+}
+
+.mini{
+  background:rgba(255,255,255,.6);
+  padding:2px 5px;
+  border-radius:999px
+}
+
+/* DASHBOARD */
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  margin-bottom:14px
+}
+
+.kpi{padding:16px}
+
+.kpi .num{
+  font-size:28px;
+  font-weight:800;
+  margin-top:4px
+}
+
+.kpi .lbl{
+  font-size:12px;
+  color:var(--muted)
+}
+
+.dashboard-filter{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+  padding:10px 14px
+}
+
+.dashboard-filter-title{
+  font-size:12px;
+  font-weight:800;
+  color:#3d5268
+}
+
+.range-buttons{
+  display:flex;
+  gap:6px
+}
+
+.range-btn{
+  border:1px solid var(--line);
+  background:#fff;
+  color:#40566d;
+  border-radius:999px;
+  padding:7px 13px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer
+}
+
+.range-btn:hover{background:#eef5fb}
+
+.range-btn.active{
+  background:var(--blue);
+  border-color:var(--blue);
+  color:#fff
+}
+
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:14px
+}
+
+.dashboard-secondary{
+  display:grid;
+  grid-template-columns:1.7fr 1fr;
+  gap:14px;
+  margin-top:14px
+}
+
+.dashboard-chart{
+  margin-top:14px
+}
+
+.block{padding:16px}
+
+.block-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px
+}
+
+.block-head h2{
+  margin:0;
+  font-size:17px
+}
+
+.chart-sub{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:3px
+}
+
+.upcoming-days{
+  display:flex;
+  flex-direction:column;
+  gap:9px
+}
+
+.upcoming-day{
+  display:grid;
+  grid-template-columns:120px 1fr auto;
+  gap:12px;
+  align-items:start;
+  padding:11px 0;
+  border-bottom:1px solid var(--line)
+}
+
+.upcoming-day:last-child{
+  border-bottom:0
+}
+
+.upcoming-date strong{
+  display:block;
+  font-size:13px
+}
+
+.upcoming-date span{
+  font-size:11px;
+  color:var(--muted)
+}
+
+.upcoming-items{
+  display:flex;
+  flex-direction:column;
+  gap:5px
+}
+
+.upcoming-item{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px
+}
+
+.upcoming-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  flex:0 0 auto
+}
+
+.upcoming-count{
+  font-size:12px;
+  font-weight:800;
+  color:#334e68;
+  white-space:nowrap
+}
+
+.donut-area{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  min-height:190px
+}
+
+.donut{
+  width:164px;
+  height:164px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto
+}
+
+.donut-hole{
+  width:102px;
+  height:102px;
+  border-radius:50%;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  box-shadow:inset 0 0 0 1px var(--line);
+  text-align:center
+}
+
+.donut-hole strong{
+  font-size:25px
+}
+
+.donut-hole span{
+  font-size:10px;
+  color:var(--muted)
+}
+
+.donut-legend{
+  display:flex;
+  flex-direction:column;
+  gap:8px
+}
+
+.donut-legend-row{
+  display:grid;
+  grid-template-columns:10px 1fr auto;
+  gap:7px;
+  align-items:center;
+  font-size:12px
+}
+
+.donut-legend-row i{
+  width:10px;
+  height:10px;
+  border-radius:50%
+}
+
+.day-bars{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:8px
+}
+
+.day-bar-row{
+  display:grid;
+  grid-template-columns:110px 1fr 42px;
+  gap:10px;
+  align-items:center
+}
+
+.day-bar-label{
+  font-size:11px;
+  color:#52667a
+}
+
+.day-bar-track{
+  height:22px;
+  background:#eef2f5;
+  border-radius:7px;
+  overflow:hidden;
+  display:flex
+}
+
+.day-bar-segment{
+  height:100%;
+  min-width:2px
+}
+
+.day-bar-total{
+  text-align:right;
+  font-size:12px;
+  font-weight:800
+}
+
+/* TABELLEN */
+
+.table{
+  width:100%;
+  border-collapse:collapse
+}
+
+.table th,.table td{
+  text-align:left;
+  padding:9px 8px;
+  border-bottom:1px solid var(--line);
+  font-size:12px
+}
+
+.table th{
+  color:var(--muted);
+  font-weight:700
+}
+
+.attention-item,.history-item{
+  padding:10px 0;
+  border-bottom:1px solid var(--line)
+}
+
+.attention-item:last-child,
+.history-item:last-child{
+  border-bottom:0
+}
+
+.history-item strong{
+  font-size:13px
+}
+
+.history-item .meta{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:3px
+}
+
+/* DIALOGS */
+
+dialog{
+  border:0;
+  border-radius:14px;
+  padding:0;
+  width:min(620px,90vw);
+  box-shadow:0 24px 70px rgba(0,0,0,.26)
+}
+
+dialog::backdrop{
+  background:rgba(8,28,46,.55)
+}
+
+#planForm{padding:20px}
+
+.dialog-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px
+}
+
+.dialog-head h2{
+  margin:0 0 4px
+}
+
+.dialog-head p{
+  margin:0 0 18px;
+  font-size:12px
+}
+
+.icon-btn{
+  border:0;
+  background:transparent;
+  font-size:26px;
+  cursor:pointer;
+  color:#687a8c
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px
+}
+
+.form-grid label{
+  font-size:12px;
+  font-weight:700;
+  color:#3d5268
+}
+
+.form-grid .wide{
+  grid-column:1/-1
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea{
+  display:block;
+  width:100%;
+  margin-top:5px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:10px;
+  background:#fff
+}
+
+.form-grid small{
+  font-weight:400;
+  color:var(--muted)
+}
+
+.dialog-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px
+}
+
+.spacer{flex:1}
+
+/* CATEGORIEEN */
+
+.category-manager{
+  padding:20px
+}
+
+.category-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:14px 0 18px
+}
+
+.category-row{
+  display:grid;
+  grid-template-columns:42px 1fr auto auto;
+  gap:8px;
+  align-items:center;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#fff;
+  position:relative
+}
+
+.category-row input[type=text]{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:9px
+}
+
+.category-add{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  align-items:end;
+  margin-top:10px
+}
+
+.category-add label{
+  font-size:12px;
+  font-weight:700;
+  color:#3d5268
+}
+
+.category-add input[type=text]{
+  width:100%;
+  margin-top:5px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:10px
+}
+
+.section-title{
+  font-size:13px;
+  font-weight:800;
+  color:#3d5268;
+  margin-top:10px
+}
+
+.color-palette{
+  grid-column:1/-1;
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  align-items:center;
+  padding-top:3px
+}
+
+.color-swatch{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  border:3px solid #fff;
+  box-shadow:0 0 0 1px #aebbc7;
+  cursor:pointer;
+  padding:0;
+  transition:.12s transform,.12s box-shadow
+}
+
+.color-swatch:hover{
+  transform:scale(1.12)
+}
+
+.color-swatch.active{
+  box-shadow:0 0 0 3px #173f63;
+  transform:scale(1.08)
+}
+
+.assigned-color{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  border:3px solid #fff;
+  box-shadow:0 0 0 1px #aebbc7;
+  cursor:pointer;
+  padding:0
+}
+
+.assigned-color:hover{
+  box-shadow:0 0 0 3px #b9c7d3
+}
+
+.row-palette{
+  display:none;
+  position:absolute;
+  left:9px;
+  top:52px;
+  z-index:50;
+  width:338px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow:0 12px 32px rgba(20,44,70,.2);
+  padding:10px;
+  gap:8px;
+  flex-wrap:wrap
+}
+
+.row-palette.open{
+  display:flex
+}
+
+.palette-label{
+  grid-column:1/-1;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:2px
+}
+
+@media(max-width:1150px){
+  .dashboard-secondary{
+    grid-template-columns:1fr
+  }
+
+  .donut-area{
+    justify-content:center
+  }
+}
+  </style>
+</head>
+
+<body>
+
+<div class="app-shell">
+
+  <aside class="side">
+
+    <div class="brand">
+      <img src="./altez-icon.svg" alt="">
       <div>
-        <h2>Vrachten per geplande dag</h2>
-        <div class="chart-sub">
-          De balken zijn opgedeeld volgens de categorie-kleuren
-        </div>
+        <strong>ALTEZ</strong>
+        <span>Dagplanning</span>
       </div>
     </div>
-    <div id="dayBars" class="day-bars"></div>
+
+    <button class="nav active" data-tab="planning">
+      ▦ <span>Planning</span>
+    </button>
+
+    <button class="nav" data-tab="dashboard">
+      ◫ <span>Dashboard</span>
+    </button>
+
+    <button class="nav" data-tab="history">
+      ↺ <span>Historiek</span>
+    </button>
+
+    <div class="side-foot">
+      <span id="connectState">Standalone testmodus</span>
+    </div>
+
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div>
+        <h1 id="pageTitle">Dagplanning</h1>
+        <div class="muted" id="projectContext">Project laden…</div>
+      </div>
+
+      <div class="top-actions">
+
+        <select id="projectSelect"></select>
+
+        <button class="btn secondary" id="openField">
+          Werfapp openen
+        </button>
+
+        <button class="btn secondary" id="manageCategories">
+          Categorieën
+        </button>
+
+        <button class="btn primary" id="addPlan">
+          + Planning toevoegen
+        </button>
+
+      </div>
+
+    </header>
+
+    <!-- PLANNING -->
+
+    <section id="tab-planning" class="tab-panel">
+
+      <div class="toolbar card">
+
+        <div class="toolbar-group">
+
+          <button class="btn ghost" id="prevWeek">
+            ←
+          </button>
+
+          <label>
+            Vanaf week van
+            <input type="date" id="weekStart">
+          </label>
+
+          <button class="btn ghost" id="nextWeek">
+            →
+          </button>
+
+          <button class="btn secondary" id="todayBtn">
+            Deze week
+          </button>
+
+        </div>
+
+        <div class="legend" id="legend"></div>
+
+      </div>
+
+      <div class="planner card">
+
+        <div class="weekday-head">
+          <div>maandag</div>
+          <div>dinsdag</div>
+          <div>woensdag</div>
+          <div>donderdag</div>
+          <div>vrijdag</div>
+        </div>
+
+        <div id="calendarRows"></div>
+
+      </div>
+
+    </section>
+
+    <!-- DASHBOARD -->
+
+    <section id="tab-dashboard" class="tab-panel hidden">
+
+      <div class="dashboard-filter card">
+
+        <div>
+
+          <div class="dashboard-filter-title">
+            Periode komende planning
+          </div>
+
+          <div class="chart-sub" id="rangeDescription">
+            Volgende 30 dagen
+          </div>
+
+        </div>
+
+        <div class="range-buttons" id="dashboardRange">
+
+          <button
+            type="button"
+            class="range-btn"
+            data-range="7">
+            7 dagen
+          </button>
+
+          <button
+            type="button"
+            class="range-btn active"
+            data-range="30">
+            30 dagen
+          </button>
+
+          <button
+            type="button"
+            class="range-btn"
+            data-range="all">
+            Alles
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <div class="dashboard-grid">
+
+        <div class="card block">
+
+          <div class="block-head">
+            <h2>Vandaag</h2>
+            <span id="dashDate"></span>
+          </div>
+
+          <div id="todayTable"></div>
+
+        </div>
+
+        <div class="card block">
+
+          <div class="block-head">
+            <h2>Aandachtspunten</h2>
+          </div>
+
+          <div id="attention"></div>
+
+        </div>
+
+      </div>
+
+      <div class="dashboard-secondary">
+
+        <div class="card block">
+
+          <div class="block-head">
+
+            <div>
+
+              <h2>Volgende geplande dagen</h2>
+
+              <div
+                class="chart-sub"
+                id="upcomingSubtitle">
+
+                De eerstvolgende 10 geplande dagen binnen de gekozen periode
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div
+            id="upcomingDays"
+            class="upcoming-days">
+          </div>
+
+        </div>
+
+        <div class="card block">
+
+          <div class="block-head">
+
+            <div>
+
+              <h2>Status komende planning</h2>
+
+              <div class="chart-sub">
+                Verdeling over dezelfde geplande dagen
+              </div>
+
+            </div>
+
+          </div>
+
+          <div id="statusDonut"></div>
+
+        </div>
+
+      </div>
+
+      <div class="card block dashboard-chart">
+
+        <div class="block-head">
+
+          <div>
+
+            <h2>Vrachten per geplande dag</h2>
+
+            <div class="chart-sub">
+              De balken zijn opgedeeld volgens de categorie-kleuren
+            </div>
+
+          </div>
+
+        </div>
+
+        <div
+          id="dayBars"
+          class="day-bars">
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- HISTORIEK -->
+
+    <section id="tab-history" class="tab-panel hidden">
+
+      <div class="card block">
+
+        <div class="block-head">
+
+          <h2>Wijzigingshistoriek</h2>
+
+          <button
+            class="btn secondary"
+            id="refreshHistory">
+            Vernieuwen
+          </button>
+
+        </div>
+
+        <div id="historyList"></div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<!-- PLANNING DIALOG -->
+
+<dialog id="planDialog">
+
+  <form method="dialog" id="planForm">
+
+    <div class="dialog-head">
+
+      <div>
+
+        <h2 id="dialogTitle">
+          Planning toevoegen
+        </h2>
+
+        <p class="muted">
+          Vrachten worden apart opgeslagen, ook als ze samen op één kaart staan.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        id="closePlanDialog"
+        class="icon-btn"
+        aria-label="Sluiten">
+        ×
+      </button>
+
+    </div>
+
+    <input type="hidden" id="planId">
+
+    <div class="form-grid">
+
+      <label>
+        Datum
+        <input
+          type="date"
+          id="planDate"
+          required>
+      </label>
+
+      <label>
+        Categorie
+        <select
+          id="planCategory"
+          required>
+        </select>
+      </label>
+
+      <label class="wide">
+
+        Vrachten
+        <small>(komma gescheiden)</small>
+
+        <input
+          id="planDeliveries"
+          placeholder="V5, V6"
+          required>
+
+      </label>
+
+      <label class="wide">
+
+        Tekst op planning
+
+        <input
+          id="planTitle"
+          placeholder="bv. Staal V5 + 6">
+
+      </label>
+
+      <label class="wide">
+
+        Opmerking
+
+        <textarea
+          id="planNotes"
+          rows="3"
+          placeholder="Optioneel">
+        </textarea>
+
+      </label>
+
+      <label class="wide">
+
+        Planner
+
+        <input
+          id="plannerName"
+          value="Planner ALTEZ">
+
+      </label>
+
+    </div>
+
+    <div class="dialog-actions">
+
+      <button
+        type="button"
+        class="btn danger hidden"
+        id="deletePlan">
+        Verwijderen
+      </button>
+
+      <span class="spacer"></span>
+
+      <button
+        type="button"
+        id="cancelPlan"
+        class="btn secondary">
+        Annuleren
+      </button>
+
+      <button
+        type="submit"
+        class="btn primary">
+        Opslaan
+      </button>
+
+    </div>
+
+  </form>
+
+</dialog>
+
+<!-- CATEGORIE DIALOG -->
+
+<dialog id="categoryDialog">
+
+  <div class="category-manager">
+
+    <div class="dialog-head">
+
+      <div>
+
+        <h2>
+          Categorieën beheren
+        </h2>
+
+        <p class="muted">
+          Voeg categorieën toe en kies zelf de kleur voor de dagplanning.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="icon-btn"
+        id="closeCategoryDialog"
+        aria-label="Sluiten">
+        ×
+      </button>
+
+    </div>
+
+    <div class="section-title">
+      Bestaande categorieën
+    </div>
+
+    <div
+      id="categoryList"
+      class="category-list">
+    </div>
+
+    <div class="section-title">
+      Nieuwe categorie
+    </div>
+
+    <form
+      id="categoryForm"
+      class="category-add">
+
+      <label>
+
+        Naam
+
+        <input
+          id="categoryName"
+          type="text"
+          placeholder="bv. Dakplaten"
+          required>
+
+      </label>
+
+      <button
+        type="submit"
+        class="btn primary">
+        Toevoegen
+      </button>
+
+      <input
+        id="categoryColor"
+        type="hidden"
+        value="#E53935">
+
+      <div class="palette-label">
+        Kies een kleur
+      </div>
+
+      <div
+        id="categoryPalette"
+        class="color-palette">
+      </div>
+
+    </form>
+
+    <div class="dialog-actions">
+
+      <span class="spacer"></span>
+
+      <button
+        type="button"
+        class="btn secondary"
+        id="closeCategoryDialogBottom">
+        Sluiten
+      </button>
+
+    </div>
+
   </div>
-</section>
+
+</dialog>
+
+<script src="https://components.connect.trimble.com/trimble-connect-workspace-api/index.js"></script>
+
+<script>
+(function(){
+
+  const KEY='altez_dagplanning_github_db_v1';
+
+  const now=()=>new Date().toISOString();
+
+  const uid=p=>
+    `${p}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,8)}`;
+
+  const clone=o=>
+    JSON.parse(JSON.stringify(o));
+
+  const seed={
+
+    projects:[
+      {
+        id:'demo-project',
+        trimbleProjectId:'',
+        name:'Project Test - Haven Antwerpen',
+        active:true
+      }
+    ],
+
+    categories:[
+
+      {
+        id:'steel',
+        name:'Staal',
+        color:'#a9d18e',
+        textColor:'#17320d'
+      },
+
+      {
+        id:'concrete',
+        name:'Betonwanden',
+        color:'#ffc000',
+        textColor:'#3b2b00'
+      },
+
+      {
+        id:'facade',
+        name:'Gevelwanden',
+        color:'#7fb3e6',
+        textColor:'#0f2d4a'
+      },
+
+      {
+        id:'slabs',
+        name:'Welfsels',
+        color:'#7fb3e6',
+        textColor:'#0f2d4a'
+      },
+
+      {
+        id:'silex',
+        name:'Silex',
+        color:'#fff97d',
+        textColor:'#3f3a00'
+      },
+
+      {
+        id:'hydroos',
+        name:'Hydroos onroerend goed',
+        color:'#e9ecef',
+        textColor:'#2f3438'
+      },
+
+      {
+        id:'material',
+        name:'Magazijnmateriaal',
+        color:'#d9e2f3',
+        textColor:'#26354a'
+      },
+
+      {
+        id:'other',
+        name:'Andere',
+        color:'#dedede',
+        textColor:'#333333'
+      }
+
+    ],
+
+    plans:[
+
+      {
+        id:'plan_today_steel',
+        projectId:'demo-project',
+        date:'2026-09-15',
+        categoryId:'steel',
+        title:'Staal V5 + V6',
+        notes:'',
+
+        deliveries:[
+
+          {
+            id:'del_today_v5',
+            code:'V5',
+            deliveredAt:null,
+            deliveredBy:null,
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          },
+
+          {
+            id:'del_today_v6',
+            code:'V6',
+            deliveredAt:null,
+            deliveredBy:null,
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          }
+
+        ],
+
+        createdAt:'2026-09-14T08:00:00.000Z',
+        updatedAt:'2026-09-14T08:00:00.000Z'
+      },
+
+      {
+        id:'plan_today_concrete',
+        projectId:'demo-project',
+        date:'2026-09-15',
+        categoryId:'concrete',
+        title:'Betonwanden V11 + V12',
+        notes:'',
+
+        deliveries:[
+
+          {
+            id:'del_today_v11',
+            code:'V11',
+            deliveredAt:'2026-09-15T06:45:00.000Z',
+            deliveredBy:'Ploegbaas Demo',
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          },
+
+          {
+            id:'del_today_v12',
+            code:'V12',
+            deliveredAt:null,
+            deliveredBy:null,
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          }
+
+        ],
+
+        createdAt:'2026-09-14T08:00:00.000Z',
+        updatedAt:'2026-09-15T06:45:00.000Z'
+      },
+
+      {
+        id:'plan_steel_1',
+        projectId:'demo-project',
+        date:'2026-09-18',
+        categoryId:'steel',
+        title:'Staal V1 + 2 + magazijnmateriaal',
+        notes:'',
+
+        deliveries:[
+
+          {
+            id:'del_v1',
+            code:'V1',
+            deliveredAt:null,
+            deliveredBy:null,
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          },
+
+          {
+            id:'del_v2',
+            code:'V2',
+            deliveredAt:null,
+            deliveredBy:null,
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          }
+
+        ],
+
+        createdAt:'2026-09-10T08:00:00.000Z',
+        updatedAt:'2026-09-10T08:00:00.000Z'
+      },
+
+      {
+        id:'plan_silex_1',
+        projectId:'demo-project',
+        date:'2026-09-22',
+        categoryId:'silex',
+        title:'Silex V1',
+        notes:'',
+
+        deliveries:[
+
+          {
+            id:'del_silex1',
+            code:'V1',
+            deliveredAt:'2026-09-22T06:58:00.000Z',
+            deliveredBy:'Ploegbaas Demo',
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          }
+
+        ],
+
+        createdAt:'2026-09-10T08:00:00.000Z',
+        updatedAt:'2026-09-22T06:58:00.000Z'
+      },
+
+      {
+        id:'plan_concrete_1',
+        projectId:'demo-project',
+        date:'2026-09-22',
+        categoryId:'concrete',
+        title:'Betonwanden V1 + 2 + 6',
+        notes:'',
+
+        deliveries:[
+
+          {
+            id:'del_b1',
+            code:'V1',
+            deliveredAt:'2026-09-22T07:30:00.000Z',
+            deliveredBy:'Ploegbaas Demo',
+            mountedAt:'2026-09-22T10:45:00.000Z',
+            mountedBy:'Ploegbaas Demo',
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          },
+
+          {
+            id:'del_b2',
+            code:'V2',
+            deliveredAt:'2026-09-22T09:12:00.000Z',
+            deliveredBy:'Ploegbaas Demo',
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          },
+
+          {
+            id:'del_b6',
+            code:'V6',
+            deliveredAt:null,
+            deliveredBy:null,
+            mountedAt:null,
+            mountedBy:null,
+            issue:'Levering 1 uur vertraagd',
+            issueAt:'2026-09-22T09:20:00.000Z',
+            issueBy:'Ploegbaas Demo'
+          }
+
+        ],
+
+        createdAt:'2026-09-10T08:00:00.000Z',
+        updatedAt:'2026-09-22T09:20:00.000Z'
+      },
+
+      {
+        id:'plan_facade_1',
+        projectId:'demo-project',
+        date:'2026-09-24',
+        categoryId:'facade',
+        title:'Gevelwanden V101 + 102 + 103 + 104 + 105',
+        notes:'',
+
+        deliveries:[
+          'V101',
+          'V102',
+          'V103',
+          'V104',
+          'V105'
+        ].map((code,i)=>({
+
+          id:`del_f10${i+1}`,
+          code,
+          deliveredAt:null,
+          deliveredBy:null,
+          mountedAt:null,
+          mountedBy:null,
+          issue:null,
+          issueAt:null,
+          issueBy:null
+
+        })),
+
+        createdAt:'2026-09-10T08:00:00.000Z',
+        updatedAt:'2026-09-10T08:00:00.000Z'
+      },
+
+      {
+        id:'plan_facade_2',
+        projectId:'demo-project',
+        date:'2026-09-25',
+        categoryId:'facade',
+        title:'Gevelwanden V201',
+        notes:'',
+
+        deliveries:[
+
+          {
+            id:'del_f201',
+            code:'V201',
+            deliveredAt:null,
+            deliveredBy:null,
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          }
+
+        ],
+
+        createdAt:'2026-09-10T08:00:00.000Z',
+        updatedAt:'2026-09-10T08:00:00.000Z'
+      },
+
+      {
+        id:'plan_steel_4',
+        projectId:'demo-project',
+        date:'2026-09-25',
+        categoryId:'steel',
+        title:'Staal V4',
+        notes:'',
+
+        deliveries:[
+
+          {
+            id:'del_s4',
+            code:'V4',
+            deliveredAt:null,
+            deliveredBy:null,
+            mountedAt:null,
+            mountedBy:null,
+            issue:null,
+            issueAt:null,
+            issueBy:null
+          }
+
+        ],
+
+        createdAt:'2026-09-10T08:00:00.000Z',
+        updatedAt:'2026-09-10T08:00:00.000Z'
+      }
+
+    ],
+
+    events:[]
+  };
+
+  function load(){
+
+    try{
+
+      const raw=localStorage.getItem(KEY);
+
+      if(raw)
+        return JSON.parse(raw);
+
+    }catch(e){}
+
+    const db=clone(seed);
+
+    save(db);
+
+    return db;
+  }
+
+  function save(db){
+
+    localStorage.setItem(
+      KEY,
+      JSON.stringify(db)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent('altez-store-changed')
+    );
+  }
+
+  function audit(db,e){
+
+    db.events.unshift({
+      id:uid('evt'),
+      at:now(),
+      ...e
+    });
+
+    db.events=db.events.slice(0,1000);
+  }
+
+  function body(opts){
+
+    if(!opts || opts.body==null)
+      return {};
+
+    if(typeof opts.body==='string')
+      return JSON.parse(opts.body||'{}');
+
+    return opts.body;
+  }
+
+  function response(v){
+
+    return Promise.resolve(
+      clone(v)
+    );
+  }
+
+  function api(rawUrl,opts={}){
+
+    const method=
+      (opts.method||'GET').toUpperCase();
+
+    const url=
+      new URL(rawUrl,location.origin);
+
+    let db=load();
+
+    if(
+      method==='GET' &&
+      url.pathname==='/api/projects'
+    ){
+      return response(db.projects);
+    }
+
+    if(
+      method==='GET' &&
+      url.pathname==='/api/categories'
+    ){
+      return response(db.categories);
+    }
+
+    if(
+      method==='POST' &&
+      url.pathname==='/api/categories'
+    ){
+
+      const b=body(opts);
+
+      const name=
+        String(b.name||'').trim();
+
+      if(!name)
+        return Promise.reject(
+          new Error('Geef een categorienaam in')
+        );
+
+      if(
+        db.categories.some(
+          c=>c.name.toLowerCase()===name.toLowerCase()
+        )
+      ){
+        return Promise.reject(
+          new Error('Deze categorie bestaat al')
+        );
+      }
+
+      const color=
+        /^#[0-9a-f]{6}$/i.test(b.color||'')
+        ? b.color
+        : '#7fb3e6';
+
+      const c={
+
+        id:uid('cat'),
+        name,
+        color,
+        textColor:b.textColor||'#17320d'
+
+      };
+
+      db.categories.push(c);
+
+      save(db);
+
+      return response(c);
+    }
+
+    const cm=
+      url.pathname.match(
+        /^\/api\/categories\/([^/]+)$/
+      );
+
+    if(cm && method==='PUT'){
+
+      const c=
+        db.categories.find(
+          x=>x.id===cm[1]
+        );
+
+      if(!c)
+        return Promise.reject(
+          new Error('Categorie niet gevonden')
+        );
+
+      const b=body(opts);
+
+      const name=
+        String(b.name||c.name).trim();
+
+      if(!name)
+        return Promise.reject(
+          new Error('Geef een categorienaam in')
+        );
+
+      if(
+        db.categories.some(
+          x=>
+            x.id!==c.id &&
+            x.name.toLowerCase()===name.toLowerCase()
+        )
+      ){
+        return Promise.reject(
+          new Error('Deze categorie bestaat al')
+        );
+      }
+
+      c.name=name;
+
+      if(
+        /^#[0-9a-f]{6}$/i.test(b.color||'')
+      ){
+        c.color=b.color;
+      }
+
+      if(b.textColor)
+        c.textColor=b.textColor;
+
+      save(db);
+
+      return response(c);
+    }
+
+    if(cm && method==='DELETE'){
+
+      const c=
+        db.categories.find(
+          x=>x.id===cm[1]
+        );
+
+      if(!c)
+        return Promise.reject(
+          new Error('Categorie niet gevonden')
+        );
+
+      if(
+        db.plans.some(
+          p=>p.categoryId===c.id
+        )
+      ){
+        return Promise.reject(
+          new Error(
+            'Deze categorie wordt nog gebruikt in de planning'
+          )
+        );
+      }
+
+      db.categories=
+        db.categories.filter(
+          x=>x.id!==c.id
+        );
+
+      save(db);
+
+      return response({
+        ok:true
+      });
+    }
+
+    if(
+      method==='POST' &&
+      url.pathname==='/api/projects/ensure'
+    ){
+
+      const b=body(opts);
+
+      let p=
+        db.projects.find(
+          x=>
+            x.trimbleProjectId &&
+            x.trimbleProjectId===b.trimbleProjectId
+        );
+
+      if(!p){
+
+        p={
+
+          id:uid('prj'),
+          trimbleProjectId:b.trimbleProjectId||'',
+          name:b.name||'Trimble project',
+          active:true
+
+        };
+
+        db.projects.push(p);
+
+        audit(db,{
+
+          projectId:p.id,
+          type:'project_linked',
+          message:`Trimble project gekoppeld: ${p.name}`,
+          user:b.user||'Trimble Connect'
+
+        });
+
+        save(db);
+      }
+
+      return response(p);
+    }
+
+    if(
+      method==='GET' &&
+      url.pathname==='/api/plans'
+    ){
+
+      let plans=db.plans.slice();
+
+      const projectId=
+        url.searchParams.get('projectId');
+
+      const from=
+        url.searchParams.get('from');
+
+      const to=
+        url.searchParams.get('to');
+
+      if(projectId)
+        plans=plans.filter(
+          p=>p.projectId===projectId
+        );
+
+      if(from)
+        plans=plans.filter(
+          p=>p.date>=from
+        );
+
+      if(to)
+        plans=plans.filter(
+          p=>p.date<=to
+        );
+
+      plans.sort(
+        (a,b)=>
+          a.date.localeCompare(b.date) ||
+          a.title.localeCompare(b.title)
+      );
+
+      return response(plans);
+    }
+
+    if(
+      method==='POST' &&
+      url.pathname==='/api/plans'
+    ){
+
+      const b=body(opts);
+
+      const deliveries=
+        (b.deliveries||[]).map(
+          d=>({
+
+            id:d.id||uid('del'),
+            code:d.code,
+            deliveredAt:d.deliveredAt||null,
+            deliveredBy:d.deliveredBy||null,
+            mountedAt:d.mountedAt||null,
+            mountedBy:d.mountedBy||null,
+            issue:d.issue||null,
+            issueAt:d.issueAt||null,
+            issueBy:d.issueBy||null
+
+          })
+        );
+
+      const p={
+
+        id:uid('plan'),
+        projectId:b.projectId,
+        date:b.date,
+        categoryId:b.categoryId,
+
+        title:
+          (b.title||'').trim() ||
+          deliveries.map(
+            d=>d.code
+          ).join(' + '),
+
+        notes:(b.notes||'').trim(),
+        deliveries,
+        createdAt:now(),
+        updatedAt:now()
+
+      };
+
+      db.plans.push(p);
+
+      audit(db,{
+
+        projectId:p.projectId,
+        type:'plan_created',
+        message:`${p.title} gepland op ${p.date}`,
+        user:b.user||'Planner',
+        entityId:p.id
+
+      });
+
+      save(db);
+
+      return response(p);
+    }
+
+    const pm=
+      url.pathname.match(
+        /^\/api\/plans\/([^/]+)$/
+      );
+
+    if(pm && method==='PUT'){
+
+      const p=
+        db.plans.find(
+          x=>x.id===pm[1]
+        );
+
+      if(!p)
+        return Promise.reject(
+          new Error('Planning niet gevonden')
+        );
+
+      const b=body(opts);
+
+      const before={
+
+        date:p.date,
+        title:p.title,
+        categoryId:p.categoryId
+
+      };
+
+      if(b.date)
+        p.date=b.date;
+
+      if(b.categoryId)
+        p.categoryId=b.categoryId;
+
+      if(typeof b.title==='string')
+        p.title=b.title.trim();
+
+      if(typeof b.notes==='string')
+        p.notes=b.notes.trim();
+
+      if(
+        Array.isArray(b.deliveries)
+      ){
+
+        const old=
+          new Map(
+            p.deliveries.map(
+              d=>[d.code,d]
+            )
+          );
+
+        p.deliveries=
+          b.deliveries.map(d=>
+
+            old.has(d.code)
+
+            ? {
+                ...old.get(d.code),
+                ...d
+              }
+
+            : {
+
+                id:uid('del'),
+                code:d.code,
+                deliveredAt:null,
+                deliveredBy:null,
+                mountedAt:null,
+                mountedBy:null,
+                issue:null,
+                issueAt:null,
+                issueBy:null
+
+              }
+
+          );
+      }
+
+      p.updatedAt=now();
+
+      audit(db,{
+
+        projectId:p.projectId,
+        type:'plan_updated',
+
+        message:
+          before.date!==p.date
+
+          ? `${p.title} verplaatst: ${before.date} → ${p.date}`
+
+          : `${p.title} aangepast`,
+
+        user:b.user||'Planner',
+        entityId:p.id
+
+      });
+
+      save(db);
+
+      return response(p);
+    }
+
+    if(pm && method==='DELETE'){
+
+      const i=
+        db.plans.findIndex(
+          x=>x.id===pm[1]
+        );
+
+      if(i<0)
+        return Promise.reject(
+          new Error('Planning niet gevonden')
+        );
+
+      const [p]=
+        db.plans.splice(i,1);
+
+      const b=body(opts);
+
+      audit(db,{
+
+        projectId:p.projectId,
+        type:'plan_deleted',
+        message:`${p.title} verwijderd van ${p.date}`,
+        user:b.user||'Planner',
+        entityId:p.id
+
+      });
+
+      save(db);
+
+      return response({
+        ok:true
+      });
+    }
+
+    const dm=
+      url.pathname.match(
+        /^\/api\/deliveries\/([^/]+)\/status$/
+      );
+
+    if(dm && method==='POST'){
+
+      const b=body(opts);
+
+      let plan=null;
+      let d=null;
+
+      for(const p of db.plans){
+
+        const hit=
+          p.deliveries.find(
+            x=>x.id===dm[1]
+          );
+
+        if(hit){
+
+          plan=p;
+          d=hit;
+          break;
+        }
+      }
+
+      if(!d)
+        return Promise.reject(
+          new Error('Vracht niet gevonden')
+        );
+
+      const user=
+        b.user||'Ploegbaas';
+
+      const at=
+        b.at||now();
+
+      if(
+        b.status==='delivered'
+      ){
+
+        const v=
+          b.value!==false;
+
+        d.deliveredAt=
+          v ? at : null;
+
+        d.deliveredBy=
+          v ? user : null;
+
+        if(!v){
+
+          d.mountedAt=null;
+          d.mountedBy=null;
+
+        }
+
+        audit(db,{
+
+          projectId:plan.projectId,
+
+          type:
+            v
+            ? 'delivered'
+            : 'delivered_undone',
+
+          message:
+            `${d.code} ${
+              v
+              ? 'geleverd'
+              : 'levering ongedaan gemaakt'
+            }`,
+
+          user,
+          entityId:d.id
+
+        });
+
+      }
+
+      else if(
+        b.status==='mounted'
+      ){
+
+        const v=
+          b.value!==false;
+
+        if(
+          v &&
+          !d.deliveredAt
+        ){
+
+          d.deliveredAt=at;
+          d.deliveredBy=user;
+
+        }
+
+        d.mountedAt=
+          v ? at : null;
+
+        d.mountedBy=
+          v ? user : null;
+
+        audit(db,{
+
+          projectId:plan.projectId,
+
+          type:
+            v
+            ? 'mounted'
+            : 'mounted_undone',
+
+          message:
+            `${d.code} ${
+              v
+              ? 'gemonteerd'
+              : 'montage ongedaan gemaakt'
+            }`,
+
+          user,
+          entityId:d.id
+
+        });
+
+      }
+
+      else if(
+        b.status==='issue'
+      ){
+
+        d.issue=
+          (b.message||'').trim()||null;
+
+        d.issueAt=
+          d.issue ? at : null;
+
+        d.issueBy=
+          d.issue ? user : null;
+
+        audit(db,{
+
+          projectId:plan.projectId,
+
+          type:
+            d.issue
+            ? 'issue'
+            : 'issue_cleared',
+
+          message:
+            d.issue
+
+            ? `${d.code}: probleem - ${d.issue}`
+
+            : `${d.code}: probleem opgelost`,
+
+          user,
+          entityId:d.id
+
+        });
+
+      }
+
+      plan.updatedAt=now();
+
+      save(db);
+
+      return response({
+        plan,
+        d
+      });
+    }
+
+    if(
+      method==='GET' &&
+      url.pathname==='/api/events'
+    ){
+
+      let e=
+        db.events.slice();
+
+      const p=
+        url.searchParams.get('projectId');
+
+      const limit=
+        Math.min(
+          Number(
+            url.searchParams.get('limit')||100
+          ),
+          500
+        );
+
+      if(p)
+        e=e.filter(
+          x=>x.projectId===p
+        );
+
+      return response(
+        e.slice(0,limit)
+      );
+    }
+
+    if(
+      method==='GET' &&
+      url.pathname==='/api/dashboard'
+    ){
+
+      const projectId=
+        url.searchParams.get('projectId');
+
+      const today=
+        url.searchParams.get('date') ||
+        new Date().toISOString().slice(0,10);
+
+      const plans=
+        db.plans.filter(
+          p=>
+            !projectId ||
+            p.projectId===projectId
+        );
+
+      const deliveries=
+        plans.flatMap(
+          p=>
+            p.deliveries.map(
+              d=>({
+
+                ...d,
+                date:p.date,
+                planId:p.id,
+                title:p.title,
+                categoryId:p.categoryId
+
+              })
+            )
+        );
+
+      const todayD=
+        deliveries.filter(
+          d=>d.date===today
+        );
+
+      const metrics={
+
+        plannedToday:
+          todayD.length,
+
+        deliveredToday:
+          todayD.filter(
+            d=>d.deliveredAt
+          ).length,
+
+        mountedToday:
+          todayD.filter(
+            d=>d.mountedAt
+          ).length,
+
+        issuesOpen:
+          deliveries.filter(
+            d=>d.issue
+          ).length,
+
+        overdue:
+          deliveries.filter(
+            d=>
+              d.date<today &&
+              !d.deliveredAt
+          ).length,
+
+        totalPlanned:
+          deliveries.length,
+
+        totalDelivered:
+          deliveries.filter(
+            d=>d.deliveredAt
+          ).length,
+
+        totalMounted:
+          deliveries.filter(
+            d=>d.mountedAt
+          ).length
+
+      };
+
+      return response({
+
+        date:today,
+        metrics,
+        deliveries
+
+      });
+    }
+
+    if(
+      method==='POST' &&
+      url.pathname==='/api/reset-demo'
+    ){
+
+      db=clone(seed);
+
+      save(db);
+
+      return response({
+        ok:true
+      });
+    }
+
+    return Promise.reject(
+      new Error('API endpoint niet gevonden')
+    );
+  }
+
+  window.AltezStore={
+
+    api,
+
+    reset:()=>{
+      save(clone(seed));
+      location.reload();
+    },
+
+    key:KEY
+
+  };
+
+})();
+</script>
+
+<script>
+
+const state={
+
+  projects:[],
+  categories:[],
+  projectId:null,
+  plans:[],
+  weekStart:null,
+  tab:'planning',
+  trimbleProject:null,
+  dashboardRange:'30'
+
+};
+
+const $=
+  s=>document.querySelector(s);
+
+const $$=
+  s=>[
+    ...document.querySelectorAll(s)
+  ];
+
+const api=
+  (url,opts={})=>
+    window.AltezStore.api(
+      url,
+      opts
+    );
+
+function toast(msg,err=false){
+
+  const e=
+    document.createElement('div');
+
+  e.className=
+    'toast'+
+    (err?' error':'');
+
+  e.textContent=msg;
+
+  document.body.appendChild(e);
+
+  setTimeout(
+    ()=>e.remove(),
+    2800
+  );
+}
+
+function isoDate(d){
+
+  return new Date(
+    d.getTime()-
+    d.getTimezoneOffset()*60000
+  )
+  .toISOString()
+  .slice(0,10);
+}
+
+function parseDate(s){
+
+  const [y,m,d]=
+    s.split('-').map(Number);
+
+  return new Date(
+    y,
+    m-1,
+    d
+  );
+}
+
+function mondayOf(d){
+
+  const x=
+    new Date(d);
+
+  const day=
+    x.getDay()||7;
+
+  x.setDate(
+    x.getDate()-day+1
+  );
+
+  x.setHours(
+    0,0,0,0
+  );
+
+  return x;
+}
+
+function plusDays(d,n){
+
+  const x=
+    new Date(d);
+
+  x.setDate(
+    x.getDate()+n
+  );
+
+  return x;
+}
+
+function fmtDay(d){
+
+  return d.toLocaleDateString(
+    'nl-BE',
+    {
+      day:'numeric',
+      month:'numeric'
+    }
+  );
+}
+
+function fmtDateTime(s){
+
+  return s
+    ? new Date(s)
+        .toLocaleString(
+          'nl-BE',
+          {
+            dateStyle:'short',
+            timeStyle:'short'
+          }
+        )
+    : '—';
+}
+
+function cat(id){
+
+  return (
+    state.categories.find(
+      c=>c.id===id
+    ) ||
+    {
+      name:'Andere',
+      color:'#ddd',
+      textColor:'#333'
+    }
+  );
+}
+
+function project(){
+
+  return state.projects.find(
+    p=>p.id===state.projectId
+  );
+}
+
+function deliverySummary(p){
+
+  const n=
+    p.deliveries.length;
+
+  const del=
+    p.deliveries.filter(
+      d=>d.deliveredAt
+    ).length;
+
+  const mnt=
+    p.deliveries.filter(
+      d=>d.mountedAt
+    ).length;
+
+  const issues=
+    p.deliveries.filter(
+      d=>d.issue
+    ).length;
+
+  return {
+    n,
+    del,
+    mnt,
+    issues
+  };
+}
+
+async function boot(){
+
+  state.categories=
+    await api('/api/categories');
+
+  state.projects=
+    await api('/api/projects');
+
+  await tryTrimble();
+
+  if(!state.projectId)
+    state.projectId=
+      state.projects[0]?.id;
+
+  fillProjects();
+
+  fillCategories();
+
+  renderLegend();
+
+  setWeek(
+    mondayOf(
+      new Date()
+    )
+  );
+
+  wire();
+
+  await refreshAll();
+}
+
+async function tryTrimble(){
+
+  try{
+
+    if(
+      window.parent===window ||
+      !window.TrimbleConnectWorkspace
+    ){
+      return;
+    }
+
+    const API=
+      await TrimbleConnectWorkspace.connect(
+
+        window.parent,
+
+        (event,args)=>{
+
+          if(
+            event==='extension.command'
+          ){
+
+            const cmd=
+              args?.data||'';
+
+            if(
+              cmd.includes('dashboard')
+            ){
+              switchTab('dashboard');
+            }
+
+            else if(
+              cmd.includes('history')
+            ){
+              switchTab('history');
+            }
+
+            else{
+              switchTab('planning');
+            }
+
+          }
+
+        },
+
+        12000
+      );
+
+    const p=
+      await (
+        API.project.getCurrentProject
+
+        ? API.project.getCurrentProject()
+
+        : API.project.getProject()
+      );
+
+    state.trimbleProject=p;
+
+    $('#connectState').textContent=
+      'Verbonden met Trimble Connect';
+
+    const linked=
+      await api(
+        '/api/projects/ensure',
+        {
+          method:'POST',
+
+          body:JSON.stringify({
+
+            trimbleProjectId:
+              p.id||
+              p.projectId,
+
+            name:
+              p.name||
+              p.title||
+              'Trimble project',
+
+            user:'Trimble Connect'
+
+          })
+        }
+      );
+
+    state.projects=
+      await api('/api/projects');
+
+    state.projectId=
+      linked.id;
+
+    if(API.ui?.setMenu){
+
+      await API.ui.setMenu({
+
+        title:'ALTEZ Dagplanning',
+
+        icon:
+          new URL(
+            './altez-icon.svg',
+            location.href
+          ).href,
+
+        command:'planning',
+
+        subMenus:[
+
+          {
+            title:'Planning',
+            command:'planning'
+          },
+
+          {
+            title:'Dashboard',
+            command:'dashboard'
+          },
+
+          {
+            title:'Historiek',
+            command:'history'
+          }
+
+        ]
+
+      });
+
+    }
+
+  }
+
+  catch(e){
+
+    console.warn(
+      'Trimble context niet beschikbaar',
+      e
+    );
+
+    $('#connectState').textContent=
+      'Standalone testmodus';
+
+  }
+}
+
+function fillProjects(){
+
+  const s=
+    $('#projectSelect');
+
+  s.innerHTML=
+    state.projects.map(
+      p=>
+        `<option value="${p.id}">
+          ${escapeHtml(p.name)}
+        </option>`
+    ).join('');
+
+  s.value=
+    state.projectId;
+
+  updateContext();
+}
+
+function fillCategories(){
+
+  const s=
+    $('#planCategory');
+
+  s.innerHTML=
+    state.categories.map(
+      c=>
+        `<option value="${c.id}">
+          ${escapeHtml(c.name)}
+        </option>`
+    ).join('');
+}
+
+function contrastText(hex){
+
+  const h=
+    String(hex||'')
+      .replace('#','');
+
+  if(h.length!==6)
+    return '#17320d';
+
+  const r=
+    parseInt(
+      h.slice(0,2),
+      16
+    );
+
+  const g=
+    parseInt(
+      h.slice(2,4),
+      16
+    );
+
+  const b=
+    parseInt(
+      h.slice(4,6),
+      16
+    );
+
+  return (
+    (
+      r*299+
+      g*587+
+      b*114
+    )/1000
+  ) > 160
+
+    ? '#1f2933'
+
+    : '#ffffff';
+}
+
+const PRESET_COLORS=[
+
+  '#E53935',
+  '#F4511E',
+  '#FB8C00',
+  '#FFB300',
+  '#FDD835',
+  '#C0CA33',
+  '#7CB342',
+  '#43A047',
+  '#2E7D32',
+  '#00897B',
+  '#00695C',
+  '#00ACC1',
+  '#039BE5',
+  '#1E88E5',
+  '#1565C0',
+  '#3949AB',
+  '#5E35B1',
+  '#8E24AA',
+  '#AD1457',
+  '#D81B60',
+  '#6D4C41',
+  '#8D6E63',
+  '#546E7A',
+  '#212121'
+
+];
+
+function paletteHtml(selected){
+
+  return PRESET_COLORS
+    .map(
+      color=>
+        `<button
+          type="button"
+          class="color-swatch ${
+            String(selected)
+              .toUpperCase()===color
+            ? 'active'
+            : ''
+          }"
+          data-color="${color}"
+          style="background:${color}"
+          title="${color}"
+          aria-label="Kleur ${color}">
+        </button>`
+    )
+    .join('');
+}
+
+function wirePalette(root,input){
+
+  root.innerHTML=
+    paletteHtml(
+      input.value
+    );
+
+  root
+    .querySelectorAll('.color-swatch')
+    .forEach(
+      btn=>
+
+        btn.onclick=()=>{
+
+          input.value=
+            btn.dataset.color;
+
+          root
+            .querySelectorAll('.color-swatch')
+            .forEach(
+              x=>
+                x.classList.toggle(
+                  'active',
+                  x===btn
+                )
+            );
+
+        }
+
+    );
+}
+
+async function reloadCategories(){
+
+  state.categories=
+    await api('/api/categories');
+
+  fillCategories();
+
+  renderLegend();
+
+  renderCategoryList();
+
+  renderCalendar();
+}
+
+function openCategoryDialog(){
+
+  renderCategoryList();
+
+  $('#categoryName').value='';
+
+  $('#categoryColor').value=
+    '#E53935';
+
+  wirePalette(
+    $('#categoryPalette'),
+    $('#categoryColor')
+  );
+
+  $('#categoryDialog')
+    .showModal();
+}
+
+function renderCategoryList(){
+
+  const root=
+    $('#categoryList');
+
+  if(!root)
+    return;
+
+  root.innerHTML=
+    state.categories.map(
+      c=>
+
+        `<div
+          class="category-row"
+          data-id="${escapeHtml(c.id)}">
+
+          <button
+            type="button"
+            class="assigned-color"
+            style="background:${escapeHtml(c.color)}"
+            title="Kleur wijzigen"
+            aria-label="Kleur van ${escapeHtml(c.name)} wijzigen">
+          </button>
+
+          <input
+            class="cat-name"
+            type="text"
+            value="${escapeHtml(c.name)}">
+
+          <button
+            type="button"
+            class="btn secondary cat-save">
+            Opslaan
+          </button>
+
+          <button
+            type="button"
+            class="btn danger cat-delete">
+            Verwijderen
+          </button>
+
+          <input
+            class="cat-color"
+            type="hidden"
+            value="${escapeHtml(c.color)}">
+
+          <div class="row-palette">
+            ${paletteHtml(c.color)}
+          </div>
+
+        </div>`
+
+    ).join('');
+
+  root
+    .querySelectorAll('.category-row')
+    .forEach(row=>{
+
+      const id=
+        row.dataset.id;
+
+      const input=
+        row.querySelector('.cat-color');
+
+      const palette=
+        row.querySelector('.row-palette');
+
+      const dot=
+        row.querySelector('.assigned-color');
+
+      dot.onclick=e=>{
+
+        e.stopPropagation();
+
+        const wasOpen=
+          palette.classList.contains('open');
+
+        root
+          .querySelectorAll('.row-palette.open')
+          .forEach(
+            p=>
+              p.classList.remove('open')
+          );
+
+        if(!wasOpen)
+          palette.classList.add('open');
+
+      };
+
+      palette
+        .querySelectorAll('.color-swatch')
+        .forEach(btn=>{
+
+          btn.onclick=e=>{
+
+            e.stopPropagation();
+
+            input.value=
+              btn.dataset.color;
+
+            dot.style.background=
+              btn.dataset.color;
+
+            palette
+              .querySelectorAll('.color-swatch')
+              .forEach(
+                x=>
+                  x.classList.toggle(
+                    'active',
+                    x===btn
+                  )
+              );
+
+            palette
+              .classList.remove('open');
+
+          };
+
+        });
+
+      row
+        .querySelector('.cat-save')
+        .onclick=
+          ()=>saveCategoryEdit(
+            id,
+            row
+          );
+
+      row
+        .querySelector('.cat-delete')
+        .onclick=
+          ()=>deleteCategory(id);
+
+    });
+}
+
+async function addCategory(e){
+
+  e.preventDefault();
+
+  const name=
+    $('#categoryName')
+      .value
+      .trim();
+
+  const color=
+    $('#categoryColor')
+      .value;
+
+  try{
+
+    await api(
+      '/api/categories',
+      {
+        method:'POST',
+
+        body:JSON.stringify({
+
+          name,
+          color,
+          textColor:
+            contrastText(color)
+
+        })
+      }
+    );
+
+    $('#categoryName').value='';
+
+    toast(
+      'Categorie toegevoegd'
+    );
+
+    await reloadCategories();
+
+    $('#categoryColor').value=
+      '#E53935';
+
+    wirePalette(
+      $('#categoryPalette'),
+      $('#categoryColor')
+    );
+
+  }
+
+  catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+}
+
+async function saveCategoryEdit(id,row){
+
+  const name=
+    row
+      .querySelector('.cat-name')
+      .value
+      .trim();
+
+  const color=
+    row
+      .querySelector('.cat-color')
+      .value;
+
+  try{
+
+    await api(
+      `/api/categories/${encodeURIComponent(id)}`,
+      {
+        method:'PUT',
+
+        body:JSON.stringify({
+
+          name,
+          color,
+          textColor:
+            contrastText(color)
+
+        })
+      }
+    );
+
+    toast(
+      'Categorie aangepast'
+    );
+
+    await reloadCategories();
+
+  }
+
+  catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+}
+
+async function deleteCategory(id){
+
+  if(
+    !confirm(
+      'Deze categorie verwijderen?'
+    )
+  ){
+    return;
+  }
+
+  try{
+
+    await api(
+      `/api/categories/${encodeURIComponent(id)}`,
+      {
+        method:'DELETE'
+      }
+    );
+
+    toast(
+      'Categorie verwijderd'
+    );
+
+    await reloadCategories();
+
+  }
+
+  catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+}
+
+function renderLegend(){
+
+  $('#legend').innerHTML=
+    state.categories.map(
+      c=>
+
+        `<span class="legend-item">
+
+          <i
+            class="legend-dot"
+            style="background:${c.color}">
+          </i>
+
+          ${escapeHtml(c.name)}
+
+        </span>`
+
+    ).join('');
+}
+
+function updateContext(){
+
+  $('#projectContext').textContent=
+    project()?.name ||
+    'Geen project geselecteerd';
+}
+
+function setWeek(d){
+
+  state.weekStart=
+    mondayOf(d);
+
+  $('#weekStart').value=
+    isoDate(
+      state.weekStart
+    );
+}
+
+async function refreshAll(){
+
+  await loadPlans();
+
+  renderCalendar();
+
+  await renderDashboard();
+
+  await renderHistory();
+}
+
+async function loadPlans(){
+
+  const from=
+    isoDate(
+      state.weekStart
+    );
+
+  const to=
+    isoDate(
+      plusDays(
+        state.weekStart,
+        34
+      )
+    );
+
+  state.plans=
+    await api(
+      `/api/plans?projectId=${
+        encodeURIComponent(
+          state.projectId
+        )
+      }&from=${from}&to=${to}`
+    );
+}
+
+function renderCalendar(){
+
+  const root=
+    $('#calendarRows');
+
+  root.innerHTML='';
+
+  const today=
+    isoDate(
+      new Date()
+    );
+
+  for(
+    let w=0;
+    w<5;
+    w++
+  ){
+
+    const row=
+      document.createElement('div');
+
+    row.className=
+      'week-row';
+
+    for(
+      let i=0;
+      i<5;
+      i++
+    ){
+
+      const d=
+        plusDays(
+          state.weekStart,
+          w*7+i
+        );
+
+      const ds=
+        isoDate(d);
+
+      const cell=
+        document.createElement('div');
+
+      cell.className=
+        'day-cell';
+
+      cell.dataset.date=
+        ds;
+
+      cell.innerHTML=
+        `<div
+          class="day-date ${
+            ds===today
+            ? 'today'
+            : ''
+          }">
+          ${fmtDay(d)}
+        </div>`;
+
+      state.plans
+        .filter(
+          p=>p.date===ds
+        )
+        .forEach(
+          p=>
+            cell.appendChild(
+              planCard(p)
+            )
+        );
+
+      cell.addEventListener(
+        'dblclick',
+        e=>{
+
+          if(
+            !e.target.closest('.plan-card')
+          ){
+            openPlanDialog(
+              null,
+              ds
+            );
+          }
+
+        }
+      );
+
+      cell.addEventListener(
+        'dragover',
+        e=>{
+
+          e.preventDefault();
+
+          cell
+            .classList
+            .add('drag-over');
+
+        }
+      );
+
+      cell.addEventListener(
+        'dragleave',
+        ()=>{
+
+          cell
+            .classList
+            .remove('drag-over');
+
+        }
+      );
+
+      cell.addEventListener(
+        'drop',
+        async e=>{
+
+          e.preventDefault();
+
+          cell
+            .classList
+            .remove('drag-over');
+
+          const id=
+            e.dataTransfer
+              .getData('text/plain');
+
+          if(id)
+            await movePlan(
+              id,
+              ds
+            );
+
+        }
+      );
+
+      row.appendChild(cell);
+
+    }
+
+    root.appendChild(row);
+
+  }
+}
+
+function planCard(p){
+
+  const c=
+    cat(p.categoryId);
+
+  const s=
+    deliverySummary(p);
+
+  const e=
+    document.createElement('div');
+
+  e.className=
+    'plan-card';
+
+  e.draggable=true;
+
+  e.style.background=
+    c.color;
+
+  e.style.color=
+    c.textColor;
+
+  e.dataset.id=
+    p.id;
+
+  e.innerHTML=
+
+    `<div class="plan-title">
+      ${escapeHtml(p.title)}
+    </div>
+
+    <div class="plan-meta">
+
+      <span class="mini">
+        🚚 ${s.del}/${s.n}
+      </span>
+
+      <span class="mini">
+        🔧 ${s.mnt}/${s.n}
+      </span>
+
+      ${
+        s.issues
+
+        ? `<span class="mini">
+            ⚠ ${s.issues}
+          </span>`
+
+        : ''
+      }
+
+    </div>`;
+
+  e.onclick=
+    ()=>openPlanDialog(p);
+
+  e.addEventListener(
+    'dragstart',
+    ev=>{
+
+      ev.dataTransfer
+        .setData(
+          'text/plain',
+          p.id
+        );
+
+      ev.dataTransfer.effectAllowed=
+        'move';
+
+    }
+  );
+
+  return e;
+}
+
+async function movePlan(id,date){
+
+  const p=
+    state.plans.find(
+      x=>x.id===id
+    );
+
+  if(
+    !p ||
+    p.date===date
+  ){
+    return;
+  }
+
+  try{
+
+    await api(
+      `/api/plans/${id}`,
+      {
+        method:'PUT',
+
+        body:JSON.stringify({
+
+          date,
+
+          user:
+            $('#plannerName').value ||
+            'Planner ALTEZ'
+
+        })
+      }
+    );
+
+    toast(
+      `Verplaatst naar ${date}`
+    );
+
+    await refreshAll();
+
+  }
+
+  catch(e){
+
+    toast(
+      e.message,
+      true
+    );
+
+  }
+}
+
+function openPlanDialog(p,date){
+
+  $('#planId').value=
+    p?.id||'';
+
+  $('#dialogTitle').textContent=
+    p
+    ? 'Planning bewerken'
+    : 'Planning toevoegen';
+
+  $('#planDate').value=
+    p?.date ||
+    date ||
+    isoDate(new Date());
+
+  $('#planCategory').value=
+    p?.categoryId ||
+    state.categories[0]?.id;
+
+  $('#planDeliveries').value=
+    p?.deliveries
+      .map(
+        d=>d.code
+      )
+      .join(', ')
+    || '';
+
+  $('#planTitle').value=
+    p?.title||'';
+
+  $('#planNotes').value=
+    p?.notes||'';
+
+  $('#deletePlan')
+    .classList
+    .toggle(
+      'hidden',
+      !p
+    );
+
+  $('#planDialog')
+    .showModal();
+}
+
+function codesFromInput(v){
+
+  return [
+    ...new Set(
+
+      v.split(',')
+
+      .map(
+        x=>x.trim()
+      )
+
+      .filter(Boolean)
+
+    )
+  ];
+}
+
+function titleFrom(catId,codes){
+
+  const c=
+    cat(catId).name;
+
+  return `${c} ${codes.join(' + ')}`;
+}
+
+async function savePlan(e){
+
+  e.preventDefault();
+
+  const id=
+    $('#planId').value;
+
+  const codes=
+    codesFromInput(
+      $('#planDeliveries').value
+    );
+
+  if(!codes.length){
+
+    return toast(
+      'Vul minstens één vracht in.',
+      true
+    );
+  }
+
+  const payload={
+
+    projectId:
+      state.projectId,
+
+    date:
+      $('#planDate').value,
+
+    categoryId:
+      $('#planCategory').value,
+
+    deliveries:
+      codes.map(
+        code=>({
+          code
+        })
+      ),
+
+    title:
+      $('#planTitle').value.trim() ||
+      titleFrom(
+        $('#planCategory').value,
+        codes
+      ),
+
+    notes:
+      $('#planNotes').value,
+
+    user:
+      $('#plannerName').value ||
+      'Planner ALTEZ'
+
+  };
+
+  try{
+
+    if(id){
+
+      await api(
+        `/api/plans/${id}`,
+        {
+          method:'PUT',
+          body:JSON.stringify(payload)
+        }
+      );
+
+    }
+
+    else{
+
+      await api(
+        '/api/plans',
+        {
+          method:'POST',
+          body:JSON.stringify(payload)
+        }
+      );
+
+    }
+
+    $('#planDialog').close();
+
+    toast(
+      'Planning opgeslagen'
+    );
+
+    await refreshAll();
+
+  }
+
+  catch(err){
+
+    toast(
+      err.message,
+      true
+    );
+
+  }
+}
+
+async function delPlan(){
+
+  const id=
+    $('#planId').value;
+
+  if(
+    !id ||
+    !confirm(
+      'Deze planning verwijderen?'
+    )
+  ){
+    return;
+  }
+
+  try{
+
+    await api(
+      `/api/plans/${id}`,
+      {
+        method:'DELETE',
+
+        body:JSON.stringify({
+
+          user:
+            $('#plannerName').value ||
+            'Planner ALTEZ'
+
+        })
+      }
+    );
+
+    $('#planDialog').close();
+
+    toast(
+      'Planning verwijderd'
+    );
+
+    await refreshAll();
+
+  }
+
+  catch(e){
+
+    toast(
+      e.message,
+      true
+    );
+
+  }
+}
+
+/* DASHBOARD */
+
+async function renderDashboard(){
+
+  if(!state.projectId)
+    return;
+
+  const d=
+    await api(
+      `/api/dashboard?projectId=${
+        encodeURIComponent(
+          state.projectId
+        )
+      }`
+    );
+
+  const m=
+    d.metrics;
+
+  const defs=[
+
+    [
+      'Vandaag gepland',
+      m.plannedToday
+    ],
+
+    [
+      'Geleverd vandaag',
+      m.deliveredToday
+    ],
+
+    [
+      'Gemonteerd vandaag',
+      m.mountedToday
+    ],
+
+    [
+      'Open problemen',
+      m.issuesOpen
+    ],
+
+    [
+      'Achterstand',
+      m.overdue
+    ]
+
+  ];
+
+  $('#kpis').innerHTML=
+    defs.map(
+      ([l,n])=>
+
+        `<div class="card kpi">
+
+          <div class="lbl">
+            ${l}
+          </div>
+
+          <div class="num">
+            ${n}
+          </div>
+
+        </div>`
+
+    ).join('');
+
+  $('#dashDate').textContent=
+    new Date(
+      d.date+'T12:00:00'
+    )
+    .toLocaleDateString(
+      'nl-BE',
+      {
+        weekday:'long',
+        day:'numeric',
+        month:'long'
+      }
+    );
+
+  const today=
+    d.deliveries.filter(
+      x=>x.date===d.date
+    );
+
+  $('#todayTable').innerHTML=
+
+    today.length
+
+    ? `<table class="table">
+
+        <thead>
+
+          <tr>
+            <th>Vracht</th>
+            <th>Planning</th>
+            <th>Geleverd</th>
+            <th>Gemonteerd</th>
+            <th>Status</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${
+            today.map(
+              x=>
+
+                `<tr>
+
+                  <td>
+                    <strong>
+                      ${escapeHtml(x.code)}
+                    </strong>
+                  </td>
+
+                  <td>
+                    ${escapeHtml(x.title)}
+                  </td>
+
+                  <td>
+                    ${fmtDateTime(x.deliveredAt)}
+                  </td>
+
+                  <td>
+                    ${fmtDateTime(x.mountedAt)}
+                  </td>
+
+                  <td>
+
+                    ${
+                      x.issue
+
+                      ? '<span class="pill danger">Probleem</span>'
+
+                      : x.mountedAt
+
+                      ? '<span class="pill ok">Gemonteerd</span>'
+
+                      : x.deliveredAt
+
+                      ? '<span class="pill warn">Geleverd</span>'
+
+                      : '<span class="pill neutral">Gepland</span>'
+                    }
+
+                  </td>
+
+                </tr>`
+
+            ).join('')
+          }
+
+        </tbody>
+
+      </table>`
+
+    : '<p class="muted">Geen vrachten vandaag.</p>';
+
+  const att=[
+
+    ...d.deliveries
+      .filter(
+        x=>x.issue
+      )
+      .map(
+        x=>({
+
+          t:'Probleem',
+
+          txt:
+            `${x.code} — ${x.issue}`,
+
+          cl:'danger'
+
+        })
+      ),
+
+    ...d.deliveries
+      .filter(
+        x=>
+          x.date<d.date &&
+          !x.deliveredAt
+      )
+      .slice(0,10)
+      .map(
+        x=>({
+
+          t:'Achterstand',
+
+          txt:
+            `${x.code} gepland op ${x.date}`,
+
+          cl:'warn'
+
+        })
+      )
+
+  ];
+
+  $('#attention').innerHTML=
+
+    att.length
+
+    ? att.map(
+        a=>
+
+          `<div class="attention-item">
+
+            <span class="pill ${a.cl}">
+              ${a.t}
+            </span>
+
+            <div
+              style="
+                margin-top:6px;
+                font-size:13px
+              ">
+
+              ${escapeHtml(a.txt)}
+
+            </div>
+
+          </div>`
+
+      ).join('')
+
+    : '<p class="muted">Geen aandachtspunten.</p>';
+
+  const allFuture=
+    d.deliveries
+
+    .filter(
+      x=>x.date>d.date
+    )
+
+    .sort(
+      (a,b)=>
+
+        a.date.localeCompare(b.date) ||
+
+        a.title.localeCompare(b.title) ||
+
+        a.code.localeCompare(b.code)
+    );
+
+  const range=
+    state.dashboardRange;
+
+  let horizon=
+    allFuture;
+
+  if(
+    range!=='all'
+  ){
+
+    const until=
+      plusDays(
+        parseDate(d.date),
+        Number(range)
+      );
+
+    const untilIso=
+      isoDate(until);
+
+    horizon=
+      allFuture.filter(
+        x=>x.date<=untilIso
+      );
+  }
+
+  const allDates=[
+    ...new Set(
+      horizon.map(
+        x=>x.date
+      )
+    )
+  ];
+
+  const upcomingDates=
+    allDates.slice(0,10);
+
+  const rangeLabel=
+    range==='all'
+
+    ? 'Alle toekomstige planning'
+
+    : `Volgende ${range} dagen`;
+
+  $('#rangeDescription')
+    .textContent=
+      rangeLabel;
+
+  $$('#dashboardRange .range-btn')
+    .forEach(
+      b=>
+
+        b.classList.toggle(
+          'active',
+          b.dataset.range===range
+        )
+
+    );
+
+  $('#upcomingSubtitle')
+    .textContent=
+
+      `Eerstvolgende ${
+        Math.min(
+          10,
+          upcomingDates.length
+        ) || 10
+      } geplande dagen binnen ${
+        range==='all'
+
+        ? 'alle toekomstige planning'
+
+        : `de volgende ${range} dagen`
+      }`;
+
+  if(!allDates.length){
+
+    $('#upcomingDays').innerHTML=
+
+      `<p class="muted">
+
+        Geen toekomstige planning in ${
+          range==='all'
+
+          ? 'de planning'
+
+          : `de volgende ${range} dagen`
+        }.
+
+      </p>`;
+
+    $('#statusDonut').innerHTML=
+      '<p class="muted">Geen gegevens.</p>';
+
+    $('#dayBars').innerHTML=
+      '<p class="muted">Geen toekomstige planning gevonden.</p>';
+
+    return;
+  }
+
+  /* VOLGENDE DAGEN */
+
+  $('#upcomingDays').innerHTML=
+
+    upcomingDates.map(ds=>{
+
+      const rows=
+        horizon.filter(
+          x=>x.date===ds
+        );
+
+      const plans=[
+        ...new Map(
+          rows.map(
+            x=>[
+              x.planId,
+              x
+            ]
+          )
+        ).values()
+      ];
+
+      const dt=
+        new Date(
+          ds+'T12:00:00'
+        );
+
+      const dayName=
+        dt.toLocaleDateString(
+          'nl-BE',
+          {
+            weekday:'long'
+          }
+        );
+
+      const dayDate=
+        dt.toLocaleDateString(
+          'nl-BE',
+          {
+            day:'numeric',
+            month:'short'
+          }
+        );
+
+      return `
+
+        <div class="upcoming-day">
+
+          <div class="upcoming-date">
+
+            <strong>
+              ${escapeHtml(dayName)}
+            </strong>
+
+            <span>
+              ${escapeHtml(dayDate)}
+            </span>
+
+          </div>
+
+          <div class="upcoming-items">
+
+            ${
+              plans.map(p=>{
+
+                const c=
+                  cat(p.categoryId);
+
+                const cnt=
+                  rows.filter(
+                    x=>x.planId===p.planId
+                  ).length;
+
+                return `
+
+                  <div class="upcoming-item">
+
+                    <i
+                      class="upcoming-dot"
+                      style="
+                        background:${c.color}
+                      ">
+                    </i>
+
+                    <span>
+                      ${escapeHtml(p.title)}
+                    </span>
+
+                    <span class="muted">
+                      (${cnt})
+                    </span>
+
+                  </div>
+
+                `;
+
+              }).join('')
+            }
+
+          </div>
+
+          <div class="upcoming-count">
+
+            ${rows.length}
+
+            vracht${rows.length===1?'':'en'}
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join('');
+
+  /* DONUT STATUS */
+
+  const statusCounts={
+
+    issue:0,
+    mounted:0,
+    delivered:0,
+    planned:0
+
+  };
+
+  horizon.forEach(x=>{
+
+    if(x.issue){
+
+      statusCounts.issue++;
+
+    }
+
+    else if(x.mountedAt){
+
+      statusCounts.mounted++;
+
+    }
+
+    else if(x.deliveredAt){
+
+      statusCounts.delivered++;
+
+    }
+
+    else{
+
+      statusCounts.planned++;
+
+    }
+
+  });
+
+  const total=
+    horizon.length||1;
+
+  const slices=[
+
+    {
+      key:'mounted',
+      label:'Gemonteerd',
+      count:statusCounts.mounted,
+      color:'#159a65'
+    },
+
+    {
+      key:'delivered',
+      label:'Geleverd',
+      count:statusCounts.delivered,
+      color:'#0b5fa5'
+    },
+
+    {
+      key:'planned',
+      label:'Gepland',
+      count:statusCounts.planned,
+      color:'#a8b5c2'
+    },
+
+    {
+      key:'issue',
+      label:'Probleem',
+      count:statusCounts.issue,
+      color:'#d64545'
+    }
+
+  ];
+
+  let pos=0;
+
+  const stops=[];
+
+  slices.forEach(s=>{
+
+    const pct=
+      s.count/
+      total*
+      100;
+
+    if(pct>0){
+
+      stops.push(
+        `${s.color} ${pos}% ${pos+pct}%`
+      );
+
+      pos+=pct;
+
+    }
+
+  });
+
+  const gradient=
+    stops.length
+
+    ? `conic-gradient(${stops.join(',')})`
+
+    : '#edf1f4';
+
+  $('#statusDonut').innerHTML=
+
+    `<div class="donut-area">
+
+      <div
+        class="donut"
+        style="
+          background:${gradient}
+        ">
+
+        <div class="donut-hole">
+
+          <strong>
+            ${horizon.length}
+          </strong>
+
+          <span>
+            vrachten
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="donut-legend">
+
+        ${
+          slices.map(
+            s=>
+
+              `<div class="donut-legend-row">
+
+                <i
+                  style="
+                    background:${s.color}
+                  ">
+                </i>
+
+                <span>
+                  ${s.label}
+                </span>
+
+                <strong>
+                  ${s.count}
+                </strong>
+
+              </div>`
+
+          ).join('')
+        }
+
+      </div>
+
+    </div>`;
+
+  /* BALKEN PER DAG */
+
+  const max=
+    Math.max(
+
+      ...allDates.map(
+        ds=>
+          horizon.filter(
+            x=>x.date===ds
+          ).length
+      ),
+
+      1
+    );
+
+  $('#dayBars').innerHTML=
+
+    allDates.map(ds=>{
+
+      const rows=
+        horizon.filter(
+          x=>x.date===ds
+        );
+
+      const dt=
+        new Date(
+          ds+'T12:00:00'
+        );
+
+      const label=
+        dt.toLocaleDateString(
+          'nl-BE',
+          {
+            weekday:'short',
+            day:'numeric',
+            month:'short'
+          }
+        );
+
+      const grouped=
+        new Map();
+
+      rows.forEach(x=>
+
+        grouped.set(
+
+          x.categoryId,
+
+          (
+            grouped.get(
+              x.categoryId
+            )||0
+          )+1
+
+        )
+
+      );
+
+      const width=
+        rows.length/
+        max*
+        100;
+
+      const segments=[
+        ...grouped.entries()
+      ]
+      .map(
+        ([categoryId,count])=>{
+
+          const c=
+            cat(categoryId);
+
+          return `
+
+            <span
+              class="day-bar-segment"
+              title="${escapeHtml(c.name)}: ${count}"
+              style="
+                background:${c.color};
+                width:${
+                  count/
+                  rows.length*
+                  100
+                }%
+              ">
+            </span>
+
+          `;
+
+        }
+      )
+      .join('');
+
+      return `
+
+        <div class="day-bar-row">
+
+          <div class="day-bar-label">
+            ${escapeHtml(label)}
+          </div>
+
+          <div class="day-bar-track">
+
+            <div
+              style="
+                display:flex;
+                width:${width}%;
+                height:100%
+              ">
+
+              ${segments}
+
+            </div>
+
+          </div>
+
+          <div class="day-bar-total">
+            ${rows.length}
+          </div>
+
+        </div>
+
+      `;
+
+    }).join('');
+}
+
+async function renderHistory(){
+
+  if(!state.projectId)
+    return;
+
+  const ev=
+    await api(
+      `/api/events?projectId=${
+        encodeURIComponent(
+          state.projectId
+        )
+      }&limit=150`
+    );
+
+  $('#historyList').innerHTML=
+
+    ev.length
+
+    ? ev.map(
+        e=>
+
+          `<div class="history-item">
+
+            <strong>
+              ${escapeHtml(e.message)}
+            </strong>
+
+            <div class="meta">
+
+              ${fmtDateTime(e.at)}
+
+              ·
+
+              ${escapeHtml(e.user||'')}
+
+            </div>
+
+          </div>`
+
+      ).join('')
+
+    : '<p class="muted">Nog geen wijzigingen.</p>';
+}
+
+function switchTab(tab){
+
+  state.tab=tab;
+
+  $$('.tab-panel')
+    .forEach(
+      x=>
+        x.classList.add('hidden')
+    );
+
+  $(`#tab-${tab}`)
+    .classList
+    .remove('hidden');
+
+  $$('.nav')
+    .forEach(
+      x=>
+        x.classList.toggle(
+          'active',
+          x.dataset.tab===tab
+        )
+    );
+
+  $('#pageTitle').textContent=
+
+    tab==='planning'
+
+    ? 'Dagplanning'
+
+    : tab==='dashboard'
+
+    ? 'Dashboard'
+
+    : 'Historiek';
+
+  if(
+    tab==='dashboard'
+  ){
+    renderDashboard();
+  }
+
+  if(
+    tab==='history'
+  ){
+    renderHistory();
+  }
+}
+
+function wire(){
+
+  $$('.nav')
+    .forEach(
+      b=>
+
+        b.onclick=
+          ()=>switchTab(
+            b.dataset.tab
+          )
+
+    );
+
+  $('#projectSelect').onchange=
+    async e=>{
+
+      state.projectId=
+        e.target.value;
+
+      updateContext();
+
+      await refreshAll();
+
+    };
+
+  $('#addPlan').onclick=
+    ()=>openPlanDialog(
+      null,
+      isoDate(new Date())
+    );
+
+  $('#manageCategories').onclick=
+    openCategoryDialog;
+
+  $('#closeCategoryDialog').onclick=
+    ()=>$('#categoryDialog').close();
+
+  $('#closeCategoryDialogBottom').onclick=
+    ()=>$('#categoryDialog').close();
+
+  $('#categoryForm')
+    .addEventListener(
+      'submit',
+      addCategory
+    );
+
+  $('#openField').onclick=
+    ()=>window.open(
+
+      `./field.html?project=${
+        encodeURIComponent(
+          state.projectId
+        )
+      }`,
+
+      '_blank'
+
+    );
+
+  $('#weekStart').onchange=
+    e=>{
+
+      setWeek(
+        parseDate(
+          e.target.value
+        )
+      );
+
+      refreshAll();
+
+    };
+
+  $('#prevWeek').onclick=
+    ()=>{
+
+      setWeek(
+        plusDays(
+          state.weekStart,
+          -7
+        )
+      );
+
+      refreshAll();
+
+    };
+
+  $('#nextWeek').onclick=
+    ()=>{
+
+      setWeek(
+        plusDays(
+          state.weekStart,
+          7
+        )
+      );
+
+      refreshAll();
+
+    };
+
+  $('#todayBtn').onclick=
+    ()=>{
+
+      setWeek(
+        mondayOf(
+          new Date()
+        )
+      );
+
+      refreshAll();
+
+    };
+
+  $('#planForm')
+    .addEventListener(
+      'submit',
+      savePlan
+    );
+
+  $('#closePlanDialog').onclick=
+    ()=>$('#planDialog').close();
+
+  $('#cancelPlan').onclick=
+    ()=>$('#planDialog').close();
+
+  $('#deletePlan').onclick=
+    delPlan;
+
+  $('#refreshHistory').onclick=
+    renderHistory;
+
+  $$('#dashboardRange .range-btn')
+    .forEach(
+      b=>
+
+        b.onclick=()=>{
+
+          state.dashboardRange=
+            b.dataset.range;
+
+          renderDashboard();
+
+        }
+
+    );
+
+  setInterval(
+    ()=>{
+
+      if(
+        state.tab==='planning'
+      ){
+        refreshAll();
+      }
+
+    },
+    15000
+  );
+}
+
+function escapeHtml(s=''){
+
+  return String(s).replace(
+
+    /[&<>'"]/g,
+
+    c=>({
+
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      "'":'&#39;',
+      '"':'&quot;'
+
+    }[c])
+
+  );
+}
+
+boot().catch(e=>{
+
+  console.error(e);
+
+  toast(
+    e.message,
+    true
+  );
+
+});
+
+</script>
+
+</body>
+</html>
