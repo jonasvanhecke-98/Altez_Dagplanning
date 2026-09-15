@@ -1,8 +1,0 @@
-{
-  "title": "ALTEZ Dagplanning",
-  "url": "https://jonasvanhecke-98.github.io/Altez_Dagplanning/office/",
-  "icon": "https://jonasvanhecke-98.github.io/Altez_Dagplanning/shared/altez-icon.svg",
-  "description": "Dagplanning, vrachtopvolging en werfstatus voor ALTEZ.",
-  "enabled": true,
-  "extensionType": ["project"]
-}
