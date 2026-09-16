@@ -13,6 +13,9 @@
 
 body{background:#eef3f7;min-height:100vh}.mobile-head{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding:12px max(14px,env(safe-area-inset-right)) 12px max(14px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between}.brand-mini{display:flex;align-items:center;gap:10px}.brand-mini img{width:38px;height:38px}.brand-mini strong{display:block;font-size:16px}.brand-mini span{display:block;color:var(--muted);font-size:11px;margin-top:2px;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.field-main{max-width:760px;margin:auto;padding:14px 14px 80px}.date-nav{display:grid;grid-template-columns:52px 1fr 52px;overflow:hidden;margin-bottom:12px}.date-arrow,.date-center{border:0;background:#fff;cursor:pointer}.date-arrow{font-size:24px;padding:16px 0}.date-center{padding:10px}.date-center strong,.date-center span{display:block}.date-center strong{font-size:18px}.date-center span{font-size:12px;color:var(--muted);margin-top:3px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.sum-card{padding:11px 8px;text-align:center}.sum-card .num{font-weight:800;font-size:22px}.sum-card .lbl{font-size:10px;color:var(--muted);margin-top:2px}.plan-block{margin-bottom:12px}.category-head{display:flex;align-items:center;gap:8px;margin:0 2px 7px;font-weight:800;font-size:14px}.category-dot{width:11px;height:11px;border-radius:3px}.delivery{padding:14px;margin-bottom:8px}.delivery-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.delivery-code{font-size:21px;font-weight:850}.delivery-title{font-size:12px;color:var(--muted);margin-top:3px}.status-note{font-size:11px;color:var(--muted);text-align:right}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}.big-action{min-height:56px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font-weight:800;cursor:pointer;color:#284158}.big-action.done{background:#e5f6ef;border-color:#b6e2d1;color:#08734b}.big-action.mount.done{background:#dfeeff;border-color:#b5d4f2;color:#0c5e9f}.issue-row{display:flex;gap:8px;margin-top:8px}.issue-btn{width:100%;border:1px dashed #d7a6a6;border-radius:9px;background:#fff6f6;color:#a43535;padding:9px;font-weight:700;cursor:pointer}.issue-text{margin-top:8px;background:#fff0f0;color:#8e2929;border-radius:8px;padding:9px;font-size:12px}.empty{padding:28px 16px;text-align:center;color:var(--muted)}.offline{background:#fff1d6;color:#7e5200;border:1px solid #f4d69a;border-radius:9px;padding:10px 12px;font-size:12px;margin-bottom:12px}dialog{border:0;border-radius:14px;width:min(440px,92vw);padding:0;box-shadow:0 24px 70px rgba(0,0,0,.28)}dialog::backdrop{background:rgba(8,28,46,.55)}#settingsForm{padding:18px}.dialog-head{display:flex;align-items:center;justify-content:space-between}.dialog-head h2{margin:0}.close{border:0;background:transparent;font-size:26px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}#settingsForm label{display:block;margin-top:13px;font-size:12px;font-weight:700}#settingsForm input,#settingsForm select{display:block;width:100%;margin-top:5px;padding:11px;border:1px solid var(--line);border-radius:8px;background:#fff}@media(min-width:700px){.field-main{padding-top:22px}.delivery{padding:17px}.big-action{font-size:16px}}
 
+
+.mobile-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.mobile-tab{border:1px solid var(--line);background:#fff;color:#40566d;border-radius:10px;padding:11px 12px;font-weight:800;cursor:pointer}.mobile-tab.active{background:var(--blue);border-color:var(--blue);color:#fff}.quantity-badge{display:inline-flex;align-items:center;margin-top:7px;padding:5px 8px;border-radius:999px;background:#eef5fb;color:#174a70;font-size:12px;font-weight:850}.daily-qty{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 12px}.daily-qty-chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:11px;font-weight:800}.overview-toolbar{padding:10px;margin-bottom:12px}.overview-toolbar-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.overview-toolbar strong{font-size:14px}.range-buttons{display:flex;gap:6px;flex-wrap:wrap}.range-btn{border:1px solid var(--line);background:#fff;color:#40566d;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800}.range-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}.overview-day{margin-bottom:14px}.overview-date{display:flex;align-items:baseline;justify-content:space-between;margin:0 2px 7px}.overview-date strong{font-size:15px}.overview-date span{font-size:11px;color:var(--muted)}.overview-plan{padding:12px;margin-bottom:8px;border-left:6px solid var(--blue)}.overview-plan-title{font-weight:850;font-size:14px}.overview-plan-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.overview-chip{background:#f1f5f8;border-radius:999px;padding:4px 7px;font-size:10px;font-weight:800}.overview-qty{font-size:12px;font-weight:850;margin-top:6px}.overview-deliveries{margin-top:8px;border-top:1px solid var(--line);padding-top:7px;display:flex;flex-wrap:wrap;gap:5px}.overview-delivery{font-size:10px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;background:#fff}.overview-delivery.done{background:#e5f6ef;border-color:#b6e2d1;color:#08734b}.overview-delivery.mount{background:#dfeeff;border-color:#b5d4f2;color:#0c5e9f}.overview-actions{display:flex;gap:8px;margin-top:8px}.overview-actions .btn{flex:1;padding:9px 10px;font-size:11px}.view-hidden{display:none!important}@media(min-width:700px){.mobile-tabs{max-width:420px}.overview-plan{padding:14px}}
+
 </style>
 </head>
 <body>
@@ -21,6 +24,11 @@ body{background:#eef3f7;min-height:100vh}.mobile-head{position:sticky;top:0;z-in
     <button class="btn secondary" id="settingsBtn">Instellingen</button>
   </header>
   <main class="field-main">
+    <div class="mobile-tabs">
+      <button type="button" class="mobile-tab active" data-view="today">Vandaag</button>
+      <button type="button" class="mobile-tab" data-view="planning">Planning</button>
+    </div>
+    <section id="view-today">
     <div class="date-nav card">
       <button class="date-arrow" id="prevDay">←</button>
       <button class="date-center" id="pickDate"><strong id="dayLabel">Vandaag</strong><span id="dateLabel"></span></button>
@@ -29,7 +37,21 @@ body{background:#eef3f7;min-height:100vh}.mobile-head{position:sticky;top:0;z-in
     </div>
     <div id="offlineBanner" class="offline hidden">Offline — wijzigingen worden bewaard en later gesynchroniseerd.</div>
     <section id="summary" class="summary-grid"></section>
+    <section id="dailyQuantities" class="daily-qty"></section>
     <section id="planList"></section>
+    </section>
+
+    <section id="view-planning" class="view-hidden">
+      <div class="card overview-toolbar">
+        <div class="overview-toolbar-top"><strong>Komende planning</strong><button type="button" class="btn secondary" id="fieldPdfBtn">PDF</button></div>
+        <div class="range-buttons" id="fieldRange">
+          <button type="button" class="range-btn" data-range="7">7 dagen</button>
+          <button type="button" class="range-btn active" data-range="30">30 dagen</button>
+          <button type="button" class="range-btn" data-range="all">Alles</button>
+        </div>
+      </div>
+      <div id="overviewList"></div>
+    </section>
   </main>
 
   <dialog id="settingsDialog">
@@ -50,14 +72,14 @@ body{background:#eef3f7;min-height:100vh}.mobile-head{position:sticky;top:0;z-in
   const seed={
     projects:[{id:'demo-project',trimbleProjectId:'',name:'Project Test - Haven Antwerpen',active:true}],
     categories:[
-      {id:'steel',name:'Staal',color:'#a9d18e',textColor:'#17320d'},
-      {id:'concrete',name:'Betonwanden',color:'#ffc000',textColor:'#3b2b00'},
-      {id:'facade',name:'Gevelwanden',color:'#7fb3e6',textColor:'#0f2d4a'},
-      {id:'slabs',name:'Welfsels',color:'#7fb3e6',textColor:'#0f2d4a'},
-      {id:'silex',name:'Silex',color:'#fff97d',textColor:'#3f3a00'},
-      {id:'hydroos',name:'Hydroos onroerend goed',color:'#e9ecef',textColor:'#2f3438'},
-      {id:'material',name:'Magazijnmateriaal',color:'#d9e2f3',textColor:'#26354a'},
-      {id:'other',name:'Andere',color:'#dedede',textColor:'#333333'}
+      {id:'steel',name:'Staal',color:'#a9d18e',textColor:'#17320d',defaultUnit:'kg'},
+      {id:'concrete',name:'Betonwanden',color:'#ffc000',textColor:'#3b2b00',defaultUnit:'m²'},
+      {id:'facade',name:'Gevelwanden',color:'#7fb3e6',textColor:'#0f2d4a',defaultUnit:'m²'},
+      {id:'slabs',name:'Welfsels',color:'#7fb3e6',textColor:'#0f2d4a',defaultUnit:'m²'},
+      {id:'silex',name:'Silex',color:'#fff97d',textColor:'#3f3a00',defaultUnit:'m²'},
+      {id:'hydroos',name:'Hydroos onroerend goed',color:'#e9ecef',textColor:'#2f3438',defaultUnit:'st'},
+      {id:'material',name:'Magazijnmateriaal',color:'#d9e2f3',textColor:'#26354a',defaultUnit:'st'},
+      {id:'other',name:'Andere',color:'#dedede',textColor:'#333333',defaultUnit:'st'}
     ],
     plans:[
       {id:'plan_today_steel',projectId:'demo-project',date:'2026-09-15',categoryId:'steel',title:'Staal V5 + V6',notes:'',deliveries:[
@@ -86,9 +108,11 @@ body{background:#eef3f7;min-height:100vh}.mobile-head{position:sticky;top:0;z-in
     ],
     events:[]
   };
+  function guessUnit(c){const n=String(c?.name||'').toLowerCase();if(n.includes('staal'))return 'kg';if(n.includes('wand')||n.includes('welf')||n.includes('gevel')||n.includes('silex')||n.includes('plaat'))return 'm²';return 'st'}
+  function normalizeDb(db){db.projects=Array.isArray(db.projects)?db.projects:[];db.categories=Array.isArray(db.categories)?db.categories:[];db.plans=Array.isArray(db.plans)?db.plans:[];db.events=Array.isArray(db.events)?db.events:[];for(const c of db.categories){if(!c.defaultUnit)c.defaultUnit=guessUnit(c)}for(const p of db.plans){p.deliveries=Array.isArray(p.deliveries)?p.deliveries:[];const c=db.categories.find(x=>x.id===p.categoryId);for(const d of p.deliveries){if(d.quantity===undefined)d.quantity=null;if(!d.unit)d.unit=c?.defaultUnit||guessUnit(c)}}return db}
   function load(){
-    try{const raw=localStorage.getItem(KEY);if(raw)return JSON.parse(raw)}catch(e){}
-    const db=clone(seed);save(db);return db;
+    try{const raw=localStorage.getItem(KEY);if(raw){const db=normalizeDb(JSON.parse(raw));localStorage.setItem(KEY,JSON.stringify(db));return db}}catch(e){}
+    const db=normalizeDb(clone(seed));save(db);return db;
   }
   function save(db){localStorage.setItem(KEY,JSON.stringify(db));window.dispatchEvent(new CustomEvent('altez-store-changed'))}
   function audit(db,e){db.events.unshift({id:uid('evt'),at:now(),...e});db.events=db.events.slice(0,1000)}
@@ -110,14 +134,14 @@ body{background:#eef3f7;min-height:100vh}.mobile-head{position:sticky;top:0;z-in
       plans.sort((a,b)=>a.date.localeCompare(b.date)||a.title.localeCompare(b.title));return response(plans);
     }
     if(method==='POST'&&url.pathname==='/api/plans'){
-      const b=body(opts);const deliveries=(b.deliveries||[]).map(d=>({id:d.id||uid('del'),code:d.code,deliveredAt:d.deliveredAt||null,deliveredBy:d.deliveredBy||null,mountedAt:d.mountedAt||null,mountedBy:d.mountedBy||null,issue:d.issue||null,issueAt:d.issueAt||null,issueBy:d.issueBy||null}));
+      const b=body(opts);const c=db.categories.find(x=>x.id===b.categoryId);const deliveries=(b.deliveries||[]).map(d=>({id:d.id||uid('del'),code:d.code,quantity:(d.quantity!==null&&d.quantity!==''&&Number.isFinite(Number(d.quantity)))?Number(d.quantity):null,unit:d.unit||c?.defaultUnit||'st',deliveredAt:d.deliveredAt||null,deliveredBy:d.deliveredBy||null,mountedAt:d.mountedAt||null,mountedBy:d.mountedBy||null,issue:d.issue||null,issueAt:d.issueAt||null,issueBy:d.issueBy||null}));
       const p={id:uid('plan'),projectId:b.projectId,date:b.date,categoryId:b.categoryId,title:(b.title||'').trim()||deliveries.map(d=>d.code).join(' + '),notes:(b.notes||'').trim(),deliveries,createdAt:now(),updatedAt:now()};db.plans.push(p);audit(db,{projectId:p.projectId,type:'plan_created',message:`${p.title} gepland op ${p.date}`,user:b.user||'Planner',entityId:p.id});save(db);return response(p);
     }
     const pm=url.pathname.match(/^\/api\/plans\/([^/]+)$/);
     if(pm&&method==='PUT'){
       const p=db.plans.find(x=>x.id===pm[1]);if(!p)return Promise.reject(new Error('Planning niet gevonden'));const b=body(opts);const before={date:p.date,title:p.title,categoryId:p.categoryId};
       if(b.date)p.date=b.date;if(b.categoryId)p.categoryId=b.categoryId;if(typeof b.title==='string')p.title=b.title.trim();if(typeof b.notes==='string')p.notes=b.notes.trim();
-      if(Array.isArray(b.deliveries)){const old=new Map(p.deliveries.map(d=>[d.code,d]));p.deliveries=b.deliveries.map(d=>old.has(d.code)?{...old.get(d.code),...d}:{id:uid('del'),code:d.code,deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null})}
+      if(Array.isArray(b.deliveries)){const old=new Map(p.deliveries.map(d=>[d.code,d]));p.deliveries=b.deliveries.map(d=>old.has(d.code)?{...old.get(d.code),...d}:{id:uid('del'),code:d.code,quantity:(d.quantity!==null&&d.quantity!==''&&Number.isFinite(Number(d.quantity)))?Number(d.quantity):null,unit:d.unit||(db.categories.find(c=>c.id===p.categoryId)?.defaultUnit||'st'),deliveredAt:null,deliveredBy:null,mountedAt:null,mountedBy:null,issue:null,issueAt:null,issueBy:null})}
       p.updatedAt=now();audit(db,{projectId:p.projectId,type:'plan_updated',message:before.date!==p.date?`${p.title} verplaatst: ${before.date} → ${p.date}`:`${p.title} aangepast`,user:b.user||'Planner',entityId:p.id});save(db);return response(p);
     }
     if(pm&&method==='DELETE'){
@@ -146,13 +170,15 @@ body{background:#eef3f7;min-height:100vh}.mobile-head{position:sticky;top:0;z-in
 
 </script>
   <script>
-const state={projects:[],categories:[],projectId:null,date:new Date(),plans:[],worker:localStorage.getItem('altez_worker')||'Ploegbaas Demo'};
+const state={projects:[],categories:[],projectId:null,date:new Date(),plans:[],overviewPlans:[],worker:localStorage.getItem('altez_worker')||'Ploegbaas Demo',view:'today',planningRange:'30'};
 const $=s=>document.querySelector(s);
 const api=(url,opts={})=>window.AltezStore.api(url,opts);
 function isoDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 function parseDate(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
 function plusDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
 function fmtTime(s){return s?new Date(s).toLocaleTimeString('nl-BE',{hour:'2-digit',minute:'2-digit'}):''}
+function fmtQty(v,unit=''){if(v===null||v===undefined||!Number.isFinite(Number(v)))return '';return `${new Intl.NumberFormat('nl-BE',{maximumFractionDigits:2}).format(Number(v))}${unit?' '+unit:''}`}
+function qtySummary(ds){const sums=new Map();for(const d of ds||[]){const q=Number(d.quantity);if(Number.isFinite(q)){const u=d.unit||'st';sums.set(u,(sums.get(u)||0)+q)}}return [...sums.entries()].map(([u,v])=>fmtQty(v,u)).join(' + ')}
 function cat(id){return state.categories.find(c=>c.id===id)||{name:'Andere',color:'#ddd'}}
 function project(){return state.projects.find(p=>p.id===state.projectId)}
 function escapeHtml(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
@@ -168,19 +194,29 @@ async function boot(){
   state.categories=await api('/api/categories');state.projects=await api('/api/projects');
   const q=new URLSearchParams(location.search);const requested=q.get('project')||localStorage.getItem('altez_project');state.projectId=state.projects.some(p=>p.id===requested)?requested:state.projects[0]?.id;
   $('#workerName').value=state.worker;$('#projectSelect').innerHTML=state.projects.map(p=>`<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');$('#projectSelect').value=state.projectId;
-  wire();updateOnline();await load();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(console.warn);flushQueue();
+  wire();updateOnline();await load();await loadOverview();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(console.warn);flushQueue();
 }
 async function load(){const ds=isoDate(state.date);state.plans=await api(`/api/plans?projectId=${encodeURIComponent(state.projectId)}&from=${ds}&to=${ds}`);render()}
+async function loadOverview(){const from=isoDate(new Date());let url=`/api/plans?projectId=${encodeURIComponent(state.projectId)}&from=${from}`;if(state.planningRange!=='all')url+=`&to=${isoDate(plusDays(new Date(),Number(state.planningRange)))}`;state.overviewPlans=await api(url);renderOverview()}
 function render(){const p=project();$('#projectName').textContent=p?.name||'';const ds=isoDate(state.date),today=isoDate(new Date());$('#dayLabel').textContent=ds===today?'Vandaag':state.date.toLocaleDateString('nl-BE',{weekday:'long'});$('#dateLabel').textContent=state.date.toLocaleDateString('nl-BE',{day:'numeric',month:'long',year:'numeric'});$('#dateInput').value=ds;const dels=state.plans.flatMap(pl=>pl.deliveries.map(d=>({...d,plan:pl})));$('#summary').innerHTML=`<div class="card sum-card"><div class="num">${dels.length}</div><div class="lbl">gepland</div></div><div class="card sum-card"><div class="num">${dels.filter(d=>d.deliveredAt).length}</div><div class="lbl">geleverd</div></div><div class="card sum-card"><div class="num">${dels.filter(d=>d.mountedAt).length}</div><div class="lbl">gemonteerd</div></div>`;
+  const qGroups=new Map();for(const d of dels){const q=Number(d.quantity);if(Number.isFinite(q)){const c=cat(d.plan.categoryId),key=`${d.plan.categoryId}|${d.unit||c.defaultUnit||'st'}`;if(!qGroups.has(key)){qGroups.set(key,{name:c.name,color:c.color,unit:d.unit||c.defaultUnit||'st',value:0})}qGroups.get(key).value+=q}}$('#dailyQuantities').innerHTML=[...qGroups.values()].map(g=>`<span class="daily-qty-chip"><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${g.color};margin-right:5px"></i>${escapeHtml(g.name)}: ${escapeHtml(fmtQty(g.value,g.unit))}</span>`).join('');
   const grouped=new Map();for(const pl of state.plans){if(!grouped.has(pl.categoryId))grouped.set(pl.categoryId,[]);grouped.get(pl.categoryId).push(pl)};const root=$('#planList');root.innerHTML='';if(!state.plans.length){root.innerHTML='<div class="card empty">Geen vrachten gepland voor deze dag.</div>';return}
   for(const [cid,plans] of grouped){const c=cat(cid),sec=document.createElement('div');sec.className='plan-block';sec.innerHTML=`<div class="category-head"><i class="category-dot" style="background:${c.color}"></i>${escapeHtml(c.name)}</div>`;for(const pl of plans){for(const d of pl.deliveries)sec.appendChild(deliveryCard(d,pl))}root.appendChild(sec)}
 }
-function deliveryCard(d,pl){const el=document.createElement('div');el.className='card delivery';el.innerHTML=`<div class="delivery-top"><div><div class="delivery-code">${escapeHtml(d.code)}</div><div class="delivery-title">${escapeHtml(pl.title)}</div></div><div class="status-note">${d.mountedAt?`Gemonteerd ${fmtTime(d.mountedAt)}`:d.deliveredAt?`Geleverd ${fmtTime(d.deliveredAt)}`:'Nog niet geleverd'}</div></div><div class="actions"><button class="big-action deliver ${d.deliveredAt?'done':''}">${d.deliveredAt?'✓ Geleverd':'Geleverd'}</button><button class="big-action mount ${d.mountedAt?'done':''}">${d.mountedAt?'✓ Gemonteerd':'Gemonteerd'}</button></div><div class="issue-row"><button class="issue-btn">${d.issue?'Probleem aanpassen':'⚠ Probleem melden'}</button></div>${d.issue?`<div class="issue-text">⚠ ${escapeHtml(d.issue)}</div>`:''}`;
+function deliveryCard(d,pl){const el=document.createElement('div');el.className='card delivery';const q=fmtQty(d.quantity,d.unit);el.innerHTML=`<div class="delivery-top"><div><div class="delivery-code">${escapeHtml(d.code)}</div><div class="delivery-title">${escapeHtml(pl.title)}</div>${q?`<div class="quantity-badge">${escapeHtml(q)}</div>`:''}</div><div class="status-note">${d.mountedAt?`Gemonteerd ${fmtTime(d.mountedAt)}`:d.deliveredAt?`Geleverd ${fmtTime(d.deliveredAt)}`:'Nog niet geleverd'}</div></div><div class="actions"><button class="big-action deliver ${d.deliveredAt?'done':''}">${d.deliveredAt?'✓ Geleverd':'Geleverd'}</button><button class="big-action mount ${d.mountedAt?'done':''}">${d.mountedAt?'✓ Gemonteerd':'Gemonteerd'}</button></div><div class="issue-row"><button class="issue-btn">${d.issue?'Probleem aanpassen':'⚠ Probleem melden'}</button></div>${d.issue?`<div class="issue-text">⚠ ${escapeHtml(d.issue)}</div>`:''}`;
   el.querySelector('.deliver').onclick=async()=>{const value=!d.deliveredAt;if(!value&&!confirm(`${d.code}: levering ongedaan maken?`))return;await change(d,'delivered',value)};el.querySelector('.mount').onclick=async()=>{const value=!d.mountedAt;if(!value&&!confirm(`${d.code}: montage ongedaan maken?`))return;await change(d,'mounted',value)};el.querySelector('.issue-btn').onclick=async()=>{const msg=prompt(`${d.code} - probleem/opmerking${d.issue?' (leegmaken om te wissen)':''}`,d.issue||'');if(msg===null)return;await change(d,'issue',true,msg)};return el
 }
-async function change(d,status,value,message=''){try{const r=await postStatus(d.id,{status,value,message,user:state.worker});if(r){await load()}else{if(status==='delivered'){d.deliveredAt=value?new Date().toISOString():null;if(!value)d.mountedAt=null}else if(status==='mounted'){if(value&&!d.deliveredAt)d.deliveredAt=new Date().toISOString();d.mountedAt=value?new Date().toISOString():null}else if(status==='issue'){d.issue=message||null}render()}}catch(e){toast(e.message,true)}}
+
+function setView(view){state.view=view;$('#view-today').classList.toggle('view-hidden',view!=='today');$('#view-planning').classList.toggle('view-hidden',view!=='planning');document.querySelectorAll('.mobile-tab').forEach(b=>b.classList.toggle('active',b.dataset.view===view));if(view==='planning')loadOverview()}
+function renderOverview(){const root=$('#overviewList');if(!root)return;document.querySelectorAll('#fieldRange .range-btn').forEach(b=>b.classList.toggle('active',b.dataset.range===state.planningRange));if(!state.overviewPlans.length){root.innerHTML='<div class="card empty">Geen toekomstige planning in deze periode.</div>';return}const byDate=new Map();for(const pl of state.overviewPlans){if(!byDate.has(pl.date))byDate.set(pl.date,[]);byDate.get(pl.date).push(pl)}root.innerHTML=[...byDate.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([ds,plans])=>{const dt=parseDate(ds);const count=plans.reduce((n,p)=>n+p.deliveries.length,0);return `<section class="overview-day"><div class="overview-date"><strong>${dt.toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'})}</strong><span>${count} vracht${count===1?'':'en'}</span></div>${plans.map(pl=>{const c=cat(pl.categoryId),dels=pl.deliveries,del=dels.filter(d=>d.deliveredAt).length,mnt=dels.filter(d=>d.mountedAt).length,issues=dels.filter(d=>d.issue).length,q=qtySummary(dels);return `<div class="card overview-plan" style="border-left-color:${c.color}"><div class="overview-plan-title">${escapeHtml(pl.title)}</div>${q?`<div class="overview-qty">${escapeHtml(q)}</div>`:''}<div class="overview-plan-meta"><span class="overview-chip">🚚 ${del}/${dels.length}</span><span class="overview-chip">🔧 ${mnt}/${dels.length}</span>${issues?`<span class="overview-chip">⚠ ${issues}</span>`:''}</div><div class="overview-deliveries">${dels.map(d=>`<span class="overview-delivery ${d.mountedAt?'mount':d.deliveredAt?'done':''}">${escapeHtml(d.code)}${d.quantity!==null&&d.quantity!==undefined?' · '+escapeHtml(fmtQty(d.quantity,d.unit)):''}</span>`).join('')}</div><div class="overview-actions"><button type="button" class="btn secondary go-day" data-date="${ds}">Open dag</button></div></div>`}).join('')}</section>`}).join('');root.querySelectorAll('.go-day').forEach(b=>b.onclick=async()=>{state.date=parseDate(b.dataset.date);setView('today');await load()})}
+function exportFieldPlanningPDF(){const p=project(),plans=state.overviewPlans;if(!plans.length)return toast('Geen planning om te exporteren.',true);const byDate=new Map();for(const pl of plans){if(!byDate.has(pl.date))byDate.set(pl.date,[]);byDate.get(pl.date).push(pl)}const body=[...byDate.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([ds,pls])=>{const d=parseDate(ds);return `<section><h2>${d.toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</h2>${pls.map(pl=>{const c=cat(pl.categoryId),q=qtySummary(pl.deliveries),del=pl.deliveries.filter(x=>x.deliveredAt).length,mnt=pl.deliveries.filter(x=>x.mountedAt).length;return `<div class="pc" style="border-left-color:${c.color}"><strong>${escapeHtml(pl.title)}</strong>${q?`<div class="q">${escapeHtml(q)}</div>`:''}<div class="m">${pl.deliveries.map(x=>escapeHtml(x.code)).join(', ')} · geleverd ${del}/${pl.deliveries.length} · gemonteerd ${mnt}/${pl.deliveries.length}</div></div>`}).join('')}</section>`}).join('');const w=window.open('','_blank');if(!w)return toast('Popup geblokkeerd.',true);w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(p?.name||'ALTEZ Werfplanning')}</title><style>@page{size:A4 portrait;margin:12mm}body{font-family:Arial,sans-serif;color:#172b3f}h1{font-size:19px;margin:0}.sub{font-size:10px;color:#66788a;margin:4px 0 12px}h2{font-size:13px;background:#eef2f5;padding:6px;margin:10px 0 5px}.pc{border:1px solid #dbe3ea;border-left:6px solid #0b5fa5;border-radius:6px;padding:8px;margin-bottom:6px;break-inside:avoid}.pc strong{font-size:12px}.q{font-size:11px;font-weight:700;margin-top:4px}.m{font-size:9px;color:#52606d;margin-top:5px}</style></head><body><h1>${escapeHtml(p?.name||'ALTEZ Werfplanning')}</h1><div class="sub">Komende planning · ${state.planningRange==='all'?'alles':state.planningRange+' dagen'} · ${new Date().toLocaleString('nl-BE')}</div>${body}<script>window.onload=()=>setTimeout(()=>window.print(),250)<\/script></body></html>`);w.document.close()}
+
+async function change(d,status,value,message=''){try{const r=await postStatus(d.id,{status,value,message,user:state.worker});if(r){await load();if(state.view==='planning')await loadOverview()}else{if(status==='delivered'){d.deliveredAt=value?new Date().toISOString():null;if(!value)d.mountedAt=null}else if(status==='mounted'){if(value&&!d.deliveredAt)d.deliveredAt=new Date().toISOString();d.mountedAt=value?new Date().toISOString():null}else if(status==='issue'){d.issue=message||null}render()}}catch(e){toast(e.message,true)}}
 function wire(){
-  $('#prevDay').onclick=async()=>{state.date=plusDays(state.date,-1);await load()};$('#nextDay').onclick=async()=>{state.date=plusDays(state.date,1);await load()};$('#pickDate').onclick=()=>$('#dateInput').showPicker?$('#dateInput').showPicker():$('#dateInput').click();$('#dateInput').onchange=async e=>{state.date=parseDate(e.target.value);await load()};$('#settingsBtn').onclick=()=>$('#settingsDialog').showModal();$('#saveSettings').onclick=async e=>{e.preventDefault();state.worker=$('#workerName').value.trim()||'Ploegbaas';state.projectId=$('#projectSelect').value;localStorage.setItem('altez_worker',state.worker);localStorage.setItem('altez_project',state.projectId);$('#settingsDialog').close();await load()};window.addEventListener('online',()=>{updateOnline();flushQueue()});window.addEventListener('offline',updateOnline);window.addEventListener('altez-store-changed',()=>load().catch(()=>{}));window.addEventListener('storage',e=>{if(e.key===window.AltezStore.key)load().catch(()=>{})});setInterval(()=>load().catch(()=>{}),20000)
+  document.querySelectorAll('.mobile-tab').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+  document.querySelectorAll('#fieldRange .range-btn').forEach(b=>b.onclick=async()=>{state.planningRange=b.dataset.range;await loadOverview()});
+  $('#fieldPdfBtn').onclick=exportFieldPlanningPDF;
+  $('#prevDay').onclick=async()=>{state.date=plusDays(state.date,-1);await load()};$('#nextDay').onclick=async()=>{state.date=plusDays(state.date,1);await load()};$('#pickDate').onclick=()=>$('#dateInput').showPicker?$('#dateInput').showPicker():$('#dateInput').click();$('#dateInput').onchange=async e=>{state.date=parseDate(e.target.value);await load()};$('#settingsBtn').onclick=()=>$('#settingsDialog').showModal();$('#saveSettings').onclick=async e=>{e.preventDefault();state.worker=$('#workerName').value.trim()||'Ploegbaas';state.projectId=$('#projectSelect').value;localStorage.setItem('altez_worker',state.worker);localStorage.setItem('altez_project',state.projectId);$('#settingsDialog').close();await load();await loadOverview()};window.addEventListener('online',()=>{updateOnline();flushQueue()});window.addEventListener('offline',updateOnline);window.addEventListener('altez-store-changed',()=>{load().catch(()=>{});loadOverview().catch(()=>{})});window.addEventListener('storage',e=>{if(e.key===window.AltezStore.key){load().catch(()=>{});loadOverview().catch(()=>{})}});setInterval(()=>{load().catch(()=>{});if(state.view==='planning')loadOverview().catch(()=>{})},20000)
 }
 function updateOnline(){$('#offlineBanner').classList.toggle('hidden',navigator.onLine);}
 boot().catch(e=>{console.error(e);toast(e.message,true)});
