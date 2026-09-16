@@ -14,6 +14,10 @@ body{min-width:980px}.app-shell{display:flex;min-height:100vh}.side{width:218px;
 
 .quantity-editor{grid-column:1/-1;border:1px solid var(--line);border-radius:10px;background:#f8fafc;padding:10px;margin-top:-2px}.quantity-editor-title{font-size:12px;font-weight:800;color:#3d5268;margin-bottom:8px}.delivery-detail-row{display:grid;grid-template-columns:90px 1fr 110px;gap:8px;align-items:center;margin-top:7px}.delivery-detail-row:first-of-type{margin-top:0}.delivery-detail-code{font-weight:800;font-size:13px}.delivery-detail-row input,.delivery-detail-row select{width:100%;padding:9px;border:1px solid var(--line);border-radius:7px;background:#fff}.quantity-chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.72);padding:2px 6px;border-radius:999px;font-weight:800}.category-unit{width:82px;border:1px solid var(--line);border-radius:7px;padding:8px;background:#fff}.category-add .new-unit{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:7px;padding:10px;background:#fff}.category-add{grid-template-columns:1fr 100px auto}.quantity-overview{display:flex;flex-direction:column;gap:11px}.quantity-line{display:grid;grid-template-columns:160px 1fr;gap:12px;align-items:center}.quantity-line-name{font-size:12px;font-weight:800}.quantity-line-unit{font-size:10px;color:var(--muted);font-weight:500}.quantity-progress{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}.quantity-progress-track{height:12px;background:#edf1f4;border-radius:999px;overflow:hidden;position:relative}.quantity-progress-delivered{height:100%;background:#76a9d5;border-radius:999px}.quantity-progress-mounted{height:100%;background:#159a65;border-radius:999px;position:absolute;left:0;top:0}.quantity-progress-text{font-size:11px;color:#52606d;white-space:nowrap}.toolbar-actions{display:flex;align-items:center;gap:8px}.pdf-note{font-size:11px;color:var(--muted)}
 
+
+/* V9 - Kantoorstatussen + afzonderlijk hoeveelhedendashboard */
+.dashboard-filter-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}.dashboard-mode-buttons{padding-right:12px;border-right:1px solid var(--line)}.dashboard-mode-buttons .range-btn{min-width:112px}.dashboard-pane.hidden{display:none!important}.quantity-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:14px}.quantity-kpi{padding:15px}.quantity-kpi-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.quantity-kpi-unit{font-size:20px;font-weight:850}.quantity-kpi-count{font-size:10px;color:var(--muted)}.quantity-kpi-values{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.quantity-kpi-values div{background:#f7f9fb;border:1px solid var(--line);border-radius:8px;padding:8px}.quantity-kpi-values span{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.02em}.quantity-kpi-values strong{display:block;font-size:13px;margin-top:3px}.quantity-day-table-wrap{overflow:auto}.quantity-day-table td strong{white-space:nowrap}.quantity-day-category{display:flex;align-items:center;gap:7px}.quantity-day-category i{width:10px;height:10px;border-radius:3px;display:inline-block;flex:0 0 auto}.delivery-detail-row{grid-template-columns:90px minmax(150px,1fr) 100px}.delivery-status-actions{grid-column:1/-1;display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:7px 0 2px;border-top:1px dashed #d9e2ea;margin-top:2px}.delivery-status-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:800;cursor:pointer;color:#40566d}.delivery-status-btn:hover:not(:disabled){background:#eef5fb}.delivery-status-btn.delivered.active{background:#e5f6ef;border-color:#b6e2d1;color:#08734b}.delivery-status-btn.mounted.active{background:#dfeeff;border-color:#b5d4f2;color:#0c5e9f}.delivery-status-btn.issue.active{background:#fde4e4;border-color:#efb6b6;color:#aa2020}.delivery-status-btn:disabled{opacity:.42;cursor:not-allowed}.delivery-status-meta{margin-left:auto;font-size:10px;color:var(--muted)}.dash-status-actions{display:flex;gap:4px;flex-wrap:wrap;min-width:195px}.dash-status-btn{border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 7px;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}.dash-status-btn.delivered.active{background:#e5f6ef;border-color:#b6e2d1;color:#08734b}.dash-status-btn.mounted.active{background:#dfeeff;border-color:#b5d4f2;color:#0c5e9f}.dash-status-btn.issue.active{background:#fde4e4;border-color:#efb6b6;color:#aa2020}@media(max-width:1150px){.dashboard-filter{align-items:flex-start}.dashboard-filter-actions{justify-content:flex-start}.dashboard-mode-buttons{border-right:0;padding-right:0}.quantity-line{grid-template-columns:1fr}.quantity-progress{grid-template-columns:1fr}.quantity-progress-text{white-space:normal}}
+
 </style>
 </head>
 <body>
@@ -58,24 +62,47 @@ body{min-width:980px}.app-shell{display:flex;min-height:100vh}.side{width:218px;
 
       <section id="tab-dashboard" class="tab-panel hidden">
         <div class="dashboard-filter card">
-          <div><div class="dashboard-filter-title">Periode komende planning</div><div class="chart-sub" id="rangeDescription">Volgende 30 dagen</div></div>
-          <div class="range-buttons" id="dashboardRange">
-            <button type="button" class="range-btn" data-range="7">7 dagen</button>
-            <button type="button" class="range-btn active" data-range="30">30 dagen</button>
-            <button type="button" class="range-btn" data-range="all">Alles</button>
+          <div>
+            <div class="dashboard-filter-title">Dashboard</div>
+            <div class="chart-sub" id="rangeDescription">Volgende 30 dagen</div>
+          </div>
+          <div class="dashboard-filter-actions">
+            <div class="range-buttons dashboard-mode-buttons" id="dashboardMode">
+              <button type="button" class="range-btn active" data-mode="shipments">Vrachten</button>
+              <button type="button" class="range-btn" data-mode="quantities">Hoeveelheden</button>
+            </div>
+            <div class="range-buttons" id="dashboardRange">
+              <button type="button" class="range-btn" data-range="7">7 dagen</button>
+              <button type="button" class="range-btn active" data-range="30">30 dagen</button>
+              <button type="button" class="range-btn" data-range="all">Alles</button>
+            </div>
           </div>
         </div>
-        <div class="kpis" id="kpis"></div>
-        <div class="dashboard-grid">
-          <div class="card block"><div class="block-head"><h2>Vandaag</h2><span id="dashDate"></span></div><div id="todayTable"></div></div>
-          <div class="card block"><div class="block-head"><h2>Aandachtspunten</h2></div><div id="attention"></div></div>
+
+        <div id="dashboardShipments" class="dashboard-pane">
+          <div class="kpis" id="kpis"></div>
+          <div class="dashboard-grid">
+            <div class="card block"><div class="block-head"><h2>Vandaag</h2><span id="dashDate"></span></div><div id="todayTable"></div></div>
+            <div class="card block"><div class="block-head"><h2>Aandachtspunten</h2></div><div id="attention"></div></div>
+          </div>
+          <div class="dashboard-secondary">
+            <div class="card block"><div class="block-head"><div><h2>Volgende geplande dagen</h2><div class="chart-sub" id="upcomingSubtitle">De eerstvolgende 10 geplande dagen binnen de gekozen periode</div></div></div><div id="upcomingDays" class="upcoming-days"></div></div>
+            <div class="card block"><div class="block-head"><div><h2>Status komende planning</h2><div class="chart-sub">Verdeling over dezelfde geplande dagen</div></div></div><div id="statusDonut"></div></div>
+          </div>
+          <div class="card block dashboard-chart"><div class="block-head"><div><h2>Vrachten per geplande dag</h2><div class="chart-sub">De balken zijn opgedeeld volgens de categorie-kleuren.</div></div></div><div id="dayBars" class="day-bars"></div></div>
         </div>
-        <div class="dashboard-secondary">
-          <div class="card block"><div class="block-head"><div><h2>Volgende geplande dagen</h2><div class="chart-sub" id="upcomingSubtitle">De eerstvolgende 10 geplande dagen binnen de gekozen periode</div></div></div><div id="upcomingDays" class="upcoming-days"></div></div>
-          <div class="card block"><div class="block-head"><div><h2>Status komende planning</h2><div class="chart-sub">Verdeling over dezelfde geplande dagen</div></div></div><div id="statusDonut"></div></div>
+
+        <div id="dashboardQuantities" class="dashboard-pane hidden">
+          <div id="quantityUnitKpis" class="quantity-kpis"></div>
+          <div class="card block">
+            <div class="block-head"><div><h2>Hoeveelheden per categorie</h2><div class="chart-sub">Gepland, geleverd en gemonteerd binnen de gekozen periode.</div></div></div>
+            <div id="quantityOverview" class="quantity-overview"></div>
+          </div>
+          <div class="card block dashboard-chart">
+            <div class="block-head"><div><h2>Hoeveelheden per geplande dag</h2><div class="chart-sub">Per categorie en eenheid, zonder verschillende eenheden bij elkaar op te tellen.</div></div></div>
+            <div id="quantityDayTable" class="quantity-day-table-wrap"></div>
+          </div>
         </div>
-        <div class="card block dashboard-chart"><div class="block-head"><div><h2>Vrachten per geplande dag</h2><div class="chart-sub">De balken zijn opgedeeld volgens de categorie-kleuren</div></div></div><div id="dayBars" class="day-bars"></div></div>
-        <div class="card block dashboard-chart"><div class="block-head"><div><h2>Hoeveelheden komende planning</h2><div class="chart-sub">Gepland, geleverd en gemonteerd op basis van kg, m², m³, lm of stuks.</div></div></div><div id="quantityOverview" class="quantity-overview"></div></div>
       </section>
 
       <section id="tab-history" class="tab-panel hidden">
@@ -255,7 +282,7 @@ body{min-width:980px}.app-shell{display:flex;min-height:100vh}.side{width:218px;
 
 </script>
   <script>
-const state={projects:[],categories:[],projectId:null,plans:[],weekStart:null,tab:'planning',trimbleProject:null,dashboardRange:'30'};
+const state={projects:[],categories:[],projectId:null,plans:[],weekStart:null,tab:'planning',trimbleProject:null,dashboardRange:'30',dashboardMode:'shipments'};
 const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)];
 const api=(url,opts={})=>window.AltezStore.api(url,opts);
 function toast(msg,err=false){const e=document.createElement('div');e.className='toast'+(err?' error':'');e.textContent=msg;document.body.appendChild(e);setTimeout(()=>e.remove(),2800)}
@@ -275,7 +302,50 @@ function parseQty(v){if(v===null||v===undefined||String(v).trim()==='')return nu
 function fmtQty(v,unit=''){if(v===null||v===undefined||!Number.isFinite(Number(v)))return '';return `${new Intl.NumberFormat('nl-BE',{maximumFractionDigits:2}).format(Number(v))}${unit?' '+unit:''}`}
 function qtySummaryForDeliveries(ds){const sums=new Map();for(const d of ds||[]){const q=Number(d.quantity);if(Number.isFinite(q)){const u=d.unit||'st';sums.set(u,(sums.get(u)||0)+q)}}return [...sums.entries()].map(([u,v])=>fmtQty(v,u)).join(' + ')}
 function unitOptions(selected){return UNITS.map(u=>`<option value="${u}" ${u===selected?'selected':''}>${u}</option>`).join('')}
-function renderDeliveryDetails(){const root=$('#deliveryDetails');if(!root)return;const codes=codesFromInput($('#planDeliveries').value);const def=defaultUnit($('#planCategory').value);for(const code of codes){if(!draftDeliveryDetails[code])draftDeliveryDetails[code]={quantity:'',unit:def}}root.innerHTML=codes.length?codes.map(code=>{const d=draftDeliveryDetails[code]||{quantity:'',unit:def};return `<div class="delivery-detail-row" data-code="${escapeHtml(code)}"><div class="delivery-detail-code">${escapeHtml(code)}</div><input class="detail-qty" inputmode="decimal" placeholder="Hoeveelheid" value="${escapeHtml(d.quantity??'')}"><select class="detail-unit">${unitOptions(d.unit||def)}</select></div>`}).join(''):'<div class="muted" style="font-size:11px">Vul eerst één of meerdere vrachtnummers in.</div>';root.querySelectorAll('.delivery-detail-row').forEach(row=>{const code=row.dataset.code;row.querySelector('.detail-qty').oninput=e=>{draftDeliveryDetails[code]={...(draftDeliveryDetails[code]||{}),quantity:e.target.value,unit:row.querySelector('.detail-unit').value}};row.querySelector('.detail-unit').onchange=e=>{draftDeliveryDetails[code]={...(draftDeliveryDetails[code]||{}),quantity:row.querySelector('.detail-qty').value,unit:e.target.value}}})}
+function statusMeta(d){
+  if(d.mountedAt)return `Gemonteerd ${fmtDateTime(d.mountedAt)}`;
+  if(d.deliveredAt)return `Geleverd ${fmtDateTime(d.deliveredAt)}`;
+  return d.id?'Nog niet geleverd':'Sla eerst de planning op';
+}
+async function changeOfficeDeliveryStatus(code,status,value,message=''){
+  const d=draftDeliveryDetails[code];
+  if(!d?.id){toast('Sla de planning eerst op voordat je een status aanpast.',true);return}
+  try{
+    const r=await api(`/api/deliveries/${encodeURIComponent(d.id)}/status`,{method:'POST',body:JSON.stringify({status,value,message,user:$('#plannerName').value||'Planner ALTEZ'})});
+    if(r?.d)draftDeliveryDetails[code]={...draftDeliveryDetails[code],...r.d};
+    renderDeliveryDetails();
+    await refreshAll();
+    toast('Status aangepast');
+  }catch(e){toast(e.message,true)}
+}
+function renderDeliveryDetails(){
+  const root=$('#deliveryDetails');if(!root)return;
+  const codes=codesFromInput($('#planDeliveries').value),def=defaultUnit($('#planCategory').value);
+  for(const code of codes){if(!draftDeliveryDetails[code])draftDeliveryDetails[code]={quantity:'',unit:def}}
+  root.innerHTML=codes.length?codes.map(code=>{
+    const d=draftDeliveryDetails[code]||{quantity:'',unit:def};const saved=!!d.id;
+    return `<div class="delivery-detail-row" data-code="${escapeHtml(code)}">
+      <div class="delivery-detail-code">${escapeHtml(code)}</div>
+      <input class="detail-qty" inputmode="decimal" placeholder="Hoeveelheid" value="${escapeHtml(d.quantity??'')}">
+      <select class="detail-unit">${unitOptions(d.unit||def)}</select>
+      <div class="delivery-status-actions">
+        <button type="button" class="delivery-status-btn delivered ${d.deliveredAt?'active':''}" ${saved?'':'disabled'}>${d.deliveredAt?'✓ Geleverd':'Geleverd'}</button>
+        <button type="button" class="delivery-status-btn mounted ${d.mountedAt?'active':''}" ${saved?'':'disabled'}>${d.mountedAt?'✓ Gemonteerd':'Gemonteerd'}</button>
+        <button type="button" class="delivery-status-btn issue ${d.issue?'active':''}" ${saved?'':'disabled'}>${d.issue?'⚠ Probleem aanpassen':'⚠ Probleem'}</button>
+        <span class="delivery-status-meta">${escapeHtml(statusMeta(d))}</span>
+      </div>
+    </div>`
+  }).join(''):'<div class="muted" style="font-size:11px">Vul eerst één of meerdere vrachtnummers in.</div>';
+  root.querySelectorAll('.delivery-detail-row').forEach(row=>{
+    const code=row.dataset.code,d=draftDeliveryDetails[code];
+    row.querySelector('.detail-qty').oninput=e=>{draftDeliveryDetails[code]={...(draftDeliveryDetails[code]||{}),quantity:e.target.value,unit:row.querySelector('.detail-unit').value}};
+    row.querySelector('.detail-unit').onchange=e=>{draftDeliveryDetails[code]={...(draftDeliveryDetails[code]||{}),quantity:row.querySelector('.detail-qty').value,unit:e.target.value}};
+    const delivered=row.querySelector('.delivery-status-btn.delivered'),mounted=row.querySelector('.delivery-status-btn.mounted'),issue=row.querySelector('.delivery-status-btn.issue');
+    if(delivered&&!delivered.disabled)delivered.onclick=()=>changeOfficeDeliveryStatus(code,'delivered',!d.deliveredAt);
+    if(mounted&&!mounted.disabled)mounted.onclick=()=>changeOfficeDeliveryStatus(code,'mounted',!d.mountedAt);
+    if(issue&&!issue.disabled)issue.onclick=async()=>{const msg=prompt('Probleem voor '+code+' omschrijven. Laat leeg om het probleem te wissen.',d.issue||'');if(msg===null)return;await changeOfficeDeliveryStatus(code,'issue',!!msg,msg)};
+  })
+}
 async function boot(){
   state.categories=await api('/api/categories'); state.projects=await api('/api/projects');
   await tryTrimble();
@@ -320,95 +390,108 @@ function renderCalendar(){
 }
 function planCard(p){const c=cat(p.categoryId),s=deliverySummary(p),q=qtySummaryForDeliveries(p.deliveries);const e=document.createElement('div');e.className='plan-card';e.draggable=true;e.style.background=c.color;e.style.color=c.textColor;e.dataset.id=p.id;e.innerHTML=`<div class="plan-title">${escapeHtml(p.title)}</div><div class="plan-meta">${q?`<span class="mini quantity-chip">${escapeHtml(q)}</span>`:''}<span class="mini">🚚 ${s.del}/${s.n}</span><span class="mini">🔧 ${s.mnt}/${s.n}</span>${s.issues?`<span class="mini">⚠ ${s.issues}</span>`:''}</div>`;e.onclick=()=>openPlanDialog(p);e.addEventListener('dragstart',ev=>{ev.dataTransfer.setData('text/plain',p.id);ev.dataTransfer.effectAllowed='move'});return e}
 async function movePlan(id,date){const p=state.plans.find(x=>x.id===id);if(!p||p.date===date)return;try{await api(`/api/plans/${id}`,{method:'PUT',body:JSON.stringify({date,user:$('#plannerName').value||'Planner ALTEZ'})});toast(`Verplaatst naar ${date}`);await refreshAll()}catch(e){toast(e.message,true)}}
-function openPlanDialog(p,date){$('#planId').value=p?.id||'';$('#dialogTitle').textContent=p?'Planning bewerken':'Planning toevoegen';$('#planDate').value=p?.date||date||isoDate(new Date());$('#planCategory').value=p?.categoryId||state.categories[0]?.id;$('#planDeliveries').value=p?.deliveries.map(d=>d.code).join(', ')||'';$('#planTitle').value=p?.title||'';$('#planNotes').value=p?.notes||'';draftDeliveryDetails={};for(const d of p?.deliveries||[]){draftDeliveryDetails[d.code]={quantity:d.quantity??'',unit:d.unit||defaultUnit(p.categoryId)}}renderDeliveryDetails();$('#deletePlan').classList.toggle('hidden',!p);$('#planDialog').showModal()}
+function openPlanDialog(p,date){$('#planId').value=p?.id||'';$('#dialogTitle').textContent=p?'Planning bewerken':'Planning toevoegen';$('#planDate').value=p?.date||date||isoDate(new Date());$('#planCategory').value=p?.categoryId||state.categories[0]?.id;$('#planDeliveries').value=p?.deliveries.map(d=>d.code).join(', ')||'';$('#planTitle').value=p?.title||'';$('#planNotes').value=p?.notes||'';draftDeliveryDetails={};for(const d of p?.deliveries||[]){draftDeliveryDetails[d.code]={...d,quantity:d.quantity??'',unit:d.unit||defaultUnit(p.categoryId)}}renderDeliveryDetails();$('#deletePlan').classList.toggle('hidden',!p);$('#planDialog').showModal()}
 function codesFromInput(v){return [...new Set(v.split(',').map(x=>x.trim()).filter(Boolean))]}
 function titleFrom(catId,codes){const c=cat(catId).name;return `${c} ${codes.join(' + ')}`}
 async function savePlan(e){e.preventDefault();const id=$('#planId').value,codes=codesFromInput($('#planDeliveries').value);if(!codes.length)return toast('Vul minstens één vracht in.',true);const deliveries=codes.map(code=>{const d=draftDeliveryDetails[code]||{};return {code,quantity:parseQty(d.quantity),unit:d.unit||defaultUnit($('#planCategory').value)}});const payload={projectId:state.projectId,date:$('#planDate').value,categoryId:$('#planCategory').value,deliveries,title:$('#planTitle').value.trim()||titleFrom($('#planCategory').value,codes),notes:$('#planNotes').value,user:$('#plannerName').value||'Planner ALTEZ'};try{if(id)await api(`/api/plans/${id}`,{method:'PUT',body:JSON.stringify(payload)});else await api('/api/plans',{method:'POST',body:JSON.stringify(payload)});$('#planDialog').close();toast('Planning opgeslagen');await refreshAll()}catch(err){toast(err.message,true)}}
 async function delPlan(){const id=$('#planId').value;if(!id||!confirm('Deze planning verwijderen?'))return;try{await api(`/api/plans/${id}`,{method:'DELETE',body:JSON.stringify({user:$('#plannerName').value||'Planner ALTEZ'})});$('#planDialog').close();toast('Planning verwijderd');await refreshAll()}catch(e){toast(e.message,true)}}
+function applyDashboardMode(){
+  const quantities=state.dashboardMode==='quantities';
+  $('#dashboardShipments').classList.toggle('hidden',quantities);
+  $('#dashboardQuantities').classList.toggle('hidden',!quantities);
+  $$('#dashboardMode .range-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===state.dashboardMode));
+}
+async function dashboardStatusChange(delivery,status,value,message=''){
+  try{
+    await api(`/api/deliveries/${encodeURIComponent(delivery.id)}/status`,{method:'POST',body:JSON.stringify({status,value,message,user:$('#plannerName').value||'Planner ALTEZ'})});
+    toast('Status aangepast');
+    await refreshAll();
+  }catch(e){toast(e.message,true)}
+}
+function wireDashboardStatusButtons(scopeDeliveries){
+  const byId=new Map(scopeDeliveries.map(d=>[d.id,d]));
+  $$('#todayTable .dash-status-btn').forEach(btn=>{
+    btn.onclick=async()=>{
+      const d=byId.get(btn.dataset.id);if(!d)return;
+      const status=btn.dataset.status;
+      if(status==='issue'){
+        const msg=prompt('Probleem voor '+d.code+' omschrijven. Laat leeg om het probleem te wissen.',d.issue||'');
+        if(msg===null)return;
+        await dashboardStatusChange(d,'issue',!!msg,msg);
+      }else{
+        const current=status==='delivered'?!!d.deliveredAt:!!d.mountedAt;
+        await dashboardStatusChange(d,status,!current);
+      }
+    }
+  })
+}
 async function renderDashboard(){
   if(!state.projectId)return;
-  const d=await api(`/api/dashboard?projectId=${encodeURIComponent(state.projectId)}`);
-  const m=d.metrics;
+  const d=await api(`/api/dashboard?projectId=${encodeURIComponent(state.projectId)}`),m=d.metrics,range=state.dashboardRange;
+  const untilIso=range==='all'?null:isoDate(plusDays(parseDate(d.date),Number(range)));
+  const inSelectedRange=x=>x.date>=d.date&&(range==='all'||x.date<=untilIso);
+  const quantityScope=d.deliveries.filter(inSelectedRange).sort((a,b)=>a.date.localeCompare(b.date)||a.title.localeCompare(b.title)||a.code.localeCompare(b.code));
+
+  $('#rangeDescription').textContent=range==='all'?'Vandaag + alle toekomstige planning':`Vandaag + volgende ${range} dagen`;
+  $$('#dashboardRange .range-btn').forEach(b=>b.classList.toggle('active',b.dataset.range===range));
+  applyDashboardMode();
+
+  /* DASHBOARD VRACHTEN */
   const defs=[['Vandaag gepland',m.plannedToday],['Geleverd vandaag',m.deliveredToday],['Gemonteerd vandaag',m.mountedToday],['Open problemen',m.issuesOpen],['Achterstand',m.overdue]];
   $('#kpis').innerHTML=defs.map(([l,n])=>`<div class="card kpi"><div class="lbl">${l}</div><div class="num">${n}</div></div>`).join('');
   $('#dashDate').textContent=new Date(d.date+'T12:00:00').toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});
   const today=d.deliveries.filter(x=>x.date===d.date);
-  $('#todayTable').innerHTML=today.length?`<table class="table"><thead><tr><th>Vracht</th><th>Planning</th><th>Hoeveelheid</th><th>Geleverd</th><th>Gemonteerd</th><th>Status</th></tr></thead><tbody>${today.map(x=>`<tr><td><strong>${escapeHtml(x.code)}</strong></td><td>${escapeHtml(x.title)}</td><td><strong>${escapeHtml(fmtQty(x.quantity,x.unit))||'—'}</strong></td><td>${fmtDateTime(x.deliveredAt)}</td><td>${fmtDateTime(x.mountedAt)}</td><td>${x.issue?'<span class="pill danger">Probleem</span>':x.mountedAt?'<span class="pill ok">Gemonteerd</span>':x.deliveredAt?'<span class="pill warn">Geleverd</span>':'<span class="pill neutral">Gepland</span>'}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">Geen vrachten vandaag.</p>';
+  $('#todayTable').innerHTML=today.length?`<table class="table"><thead><tr><th>Vracht</th><th>Planning</th><th>Hoeveelheid</th><th>Geleverd</th><th>Gemonteerd</th><th>Status</th><th>Wijzigen</th></tr></thead><tbody>${today.map(x=>`<tr><td><strong>${escapeHtml(x.code)}</strong></td><td>${escapeHtml(x.title)}</td><td><strong>${escapeHtml(fmtQty(x.quantity,x.unit))||'—'}</strong></td><td>${fmtDateTime(x.deliveredAt)}</td><td>${fmtDateTime(x.mountedAt)}</td><td>${x.issue?'<span class="pill danger">Probleem</span>':x.mountedAt?'<span class="pill ok">Gemonteerd</span>':x.deliveredAt?'<span class="pill warn">Geleverd</span>':'<span class="pill neutral">Gepland</span>'}</td><td><div class="dash-status-actions"><button type="button" class="dash-status-btn delivered ${x.deliveredAt?'active':''}" data-id="${escapeHtml(x.id)}" data-status="delivered">${x.deliveredAt?'✓ Geleverd':'Geleverd'}</button><button type="button" class="dash-status-btn mounted ${x.mountedAt?'active':''}" data-id="${escapeHtml(x.id)}" data-status="mounted">${x.mountedAt?'✓ Gemonteerd':'Gemonteerd'}</button><button type="button" class="dash-status-btn issue ${x.issue?'active':''}" data-id="${escapeHtml(x.id)}" data-status="issue">⚠</button></div></td></tr>`).join('')}</tbody></table>`:'<p class="muted">Geen vrachten vandaag.</p>';
+  wireDashboardStatusButtons(today);
 
   const att=[...d.deliveries.filter(x=>x.issue).map(x=>({t:'Probleem',txt:`${x.code} — ${x.issue}`,cl:'danger'})),...d.deliveries.filter(x=>x.date<d.date&&!x.deliveredAt).slice(0,10).map(x=>({t:'Achterstand',txt:`${x.code} gepland op ${x.date}`,cl:'warn'}))];
   $('#attention').innerHTML=att.length?att.map(a=>`<div class="attention-item"><span class="pill ${a.cl}">${a.t}</span><div style="margin-top:6px;font-size:13px">${escapeHtml(a.txt)}</div></div>`).join(''):'<p class="muted">Geen aandachtspunten.</p>';
 
   const allFuture=d.deliveries.filter(x=>x.date>d.date).sort((a,b)=>a.date.localeCompare(b.date)||a.title.localeCompare(b.title)||a.code.localeCompare(b.code));
-  const range=state.dashboardRange;
-  let horizon=allFuture;
-  if(range!=='all'){
-    const until=plusDays(parseDate(d.date),Number(range));
-    const untilIso=isoDate(until);
-    horizon=allFuture.filter(x=>x.date<=untilIso);
-  }
-  const allDates=[...new Set(horizon.map(x=>x.date))];
-  const upcomingDates=allDates.slice(0,10);
-  const rangeLabel=range==='all'?'Alle toekomstige planning':`Volgende ${range} dagen`;
-  $('#rangeDescription').textContent=rangeLabel;
-  $$('#dashboardRange .range-btn').forEach(b=>b.classList.toggle('active',b.dataset.range===range));
+  const horizon=range==='all'?allFuture:allFuture.filter(x=>x.date<=untilIso);
+  const allDates=[...new Set(horizon.map(x=>x.date))],upcomingDates=allDates.slice(0,10);
   $('#upcomingSubtitle').textContent=`Eerstvolgende ${Math.min(10,upcomingDates.length)||10} geplande dagen binnen ${range==='all'?'alle toekomstige planning':`de volgende ${range} dagen`}`;
 
   if(!allDates.length){
     $('#upcomingDays').innerHTML=`<p class="muted">Geen toekomstige planning in ${range==='all'?'de planning':`de volgende ${range} dagen`}.</p>`;
     $('#statusDonut').innerHTML='<p class="muted">Geen gegevens.</p>';
-    $('#dayBars').innerHTML='<p class="muted">Geen toekomstige planning gevonden.</p>';$('#quantityOverview').innerHTML='<p class="muted">Geen hoeveelheden in deze periode.</p>';
-    return;
-  }
-
-  $('#upcomingDays').innerHTML=upcomingDates.map(ds=>{
-    const rows=horizon.filter(x=>x.date===ds);
-    const plans=[...new Map(rows.map(x=>[x.planId,x])).values()];
-    const dt=new Date(ds+'T12:00:00');
-    const dayName=dt.toLocaleDateString('nl-BE',{weekday:'long'});
-    const dayDate=dt.toLocaleDateString('nl-BE',{day:'numeric',month:'short'});
-    return `<div class="upcoming-day"><div class="upcoming-date"><strong>${escapeHtml(dayName)}</strong><span>${escapeHtml(dayDate)}</span></div><div class="upcoming-items">${plans.map(p=>{const c=cat(p.categoryId);const pr=rows.filter(x=>x.planId===p.planId),cnt=pr.length,q=qtySummaryForDeliveries(pr);return `<div class="upcoming-item"><i class="upcoming-dot" style="background:${c.color}"></i><span>${escapeHtml(p.title)}</span><span class="muted">(${cnt}${q?' · '+escapeHtml(q):''})</span></div>`}).join('')}</div><div class="upcoming-count">${rows.length} vracht${rows.length===1?'':'en'}</div></div>`;
-  }).join('');
-
-  const statusCounts={issue:0,mounted:0,delivered:0,planned:0};
-  horizon.forEach(x=>{if(x.issue)statusCounts.issue++;else if(x.mountedAt)statusCounts.mounted++;else if(x.deliveredAt)statusCounts.delivered++;else statusCounts.planned++});
-  const slices=[
-    {key:'mounted',label:'Gemonteerd',count:statusCounts.mounted,color:'#159a65'},
-    {key:'delivered',label:'Geleverd',count:statusCounts.delivered,color:'#0b5fa5'},
-    {key:'planned',label:'Gepland',count:statusCounts.planned,color:'#a8b5c2'},
-    {key:'issue',label:'Probleem',count:statusCounts.issue,color:'#d64545'}
-  ];
-  const total=horizon.length;
-  if(!total){
-    $('#statusDonut').innerHTML='<p class="muted">Geen geplande vrachten in deze periode.</p>';
+    $('#dayBars').innerHTML='<p class="muted">Geen toekomstige planning gevonden.</p>';
   }else{
-    const radius=58;
-    const circumference=2*Math.PI*radius;
-    let offset=0;
-    const circles=slices.map(s=>{
-      if(!s.count)return '';
-      const length=(s.count/total)*circumference;
-      const dash=`${length} ${circumference-length}`;
-      const circle=`<circle cx="80" cy="80" r="${radius}" fill="none" stroke="${s.color}" stroke-width="24" stroke-dasharray="${dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 80 80)" />`;
-      offset+=length;
-      return circle;
+    $('#upcomingDays').innerHTML=upcomingDates.map(ds=>{
+      const rows=horizon.filter(x=>x.date===ds),plans=[...new Map(rows.map(x=>[x.planId,x])).values()],dt=new Date(ds+'T12:00:00');
+      return `<div class="upcoming-day"><div class="upcoming-date"><strong>${escapeHtml(dt.toLocaleDateString('nl-BE',{weekday:'long'}))}</strong><span>${escapeHtml(dt.toLocaleDateString('nl-BE',{day:'numeric',month:'short'}))}</span></div><div class="upcoming-items">${plans.map(p=>{const c=cat(p.categoryId),pr=rows.filter(x=>x.planId===p.planId),q=qtySummaryForDeliveries(pr);return `<div class="upcoming-item"><i class="upcoming-dot" style="background:${c.color}"></i><span>${escapeHtml(p.title)}</span><span class="muted">(${pr.length}${q?' · '+escapeHtml(q):''})</span></div>`}).join('')}</div><div class="upcoming-count">${rows.length} vracht${rows.length===1?'':'en'}</div></div>`;
     }).join('');
+
+    const statusCounts={issue:0,mounted:0,delivered:0,planned:0};
+    horizon.forEach(x=>{if(x.issue)statusCounts.issue++;else if(x.mountedAt)statusCounts.mounted++;else if(x.deliveredAt)statusCounts.delivered++;else statusCounts.planned++});
+    const slices=[{label:'Gemonteerd',count:statusCounts.mounted,color:'#159a65'},{label:'Geleverd',count:statusCounts.delivered,color:'#0b5fa5'},{label:'Gepland',count:statusCounts.planned,color:'#a8b5c2'},{label:'Probleem',count:statusCounts.issue,color:'#d64545'}],total=horizon.length,radius=58,circumference=2*Math.PI*radius;
+    let offset=0;
+    const circles=slices.map(s=>{if(!s.count)return '';const length=(s.count/total)*circumference,dash=`${length} ${circumference-length}`,circle=`<circle cx="80" cy="80" r="${radius}" fill="none" stroke="${s.color}" stroke-width="24" stroke-dasharray="${dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 80 80)" />`;offset+=length;return circle}).join('');
     $('#statusDonut').innerHTML=`<div class="donut-area"><div style="position:relative;width:170px;height:170px;flex:0 0 170px"><svg width="170" height="170" viewBox="0 0 160 160" style="display:block;width:170px;height:170px"><circle cx="80" cy="80" r="${radius}" fill="none" stroke="#edf1f4" stroke-width="24" />${circles}</svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none"><strong style="font-size:28px;line-height:1">${total}</strong><span style="font-size:11px;color:#66788a;margin-top:5px">vrachten</span></div></div><div class="donut-legend">${slices.map(s=>`<div class="donut-legend-row"><i style="background:${s.color}"></i><span>${s.label}</span><strong>${s.count}</strong></div>`).join('')}</div></div>`;
+
+    const max=Math.max(...allDates.map(ds=>horizon.filter(x=>x.date===ds).length),1);
+    $('#dayBars').innerHTML=allDates.map(ds=>{const rows=horizon.filter(x=>x.date===ds),dt=new Date(ds+'T12:00:00'),label=dt.toLocaleDateString('nl-BE',{weekday:'short',day:'numeric',month:'short'}),grouped=new Map();rows.forEach(x=>grouped.set(x.categoryId,(grouped.get(x.categoryId)||0)+1));const width=rows.length/max*100,segments=[...grouped.entries()].map(([categoryId,count])=>{const c=cat(categoryId);return `<span class="day-bar-segment" title="${escapeHtml(c.name)}: ${count}" style="background:${c.color};width:${count/rows.length*100}%"></span>`}).join('');return `<div class="day-bar-row"><div class="day-bar-label">${escapeHtml(label)}</div><div class="day-bar-track"><div style="display:flex;width:${width}%;height:100%">${segments}</div></div><div class="day-bar-total">${rows.length}</div></div>`}).join('');
   }
 
-  const max=Math.max(...allDates.map(ds=>horizon.filter(x=>x.date===ds).length),1);
-  $('#dayBars').innerHTML=allDates.map(ds=>{
-    const rows=horizon.filter(x=>x.date===ds);const dt=new Date(ds+'T12:00:00');const label=dt.toLocaleDateString('nl-BE',{weekday:'short',day:'numeric',month:'short'});
-    const grouped=new Map();rows.forEach(x=>grouped.set(x.categoryId,(grouped.get(x.categoryId)||0)+1));
-    const width=rows.length/max*100;
-    const segments=[...grouped.entries()].map(([categoryId,count])=>{const c=cat(categoryId);return `<span class="day-bar-segment" title="${escapeHtml(c.name)}: ${count}" style="background:${c.color};width:${count/rows.length*100}%"></span>`}).join('');
-    return `<div class="day-bar-row"><div class="day-bar-label">${escapeHtml(label)}</div><div class="day-bar-track"><div style="display:flex;width:${width}%;height:100%">${segments}</div></div><div class="day-bar-total">${rows.length}</div></div>`;
-  }).join('');
+  /* DASHBOARD HOEVEELHEDEN */
+  const unitGroups=new Map(),categoryGroups=new Map(),dayGroups=new Map();
+  for(const x of quantityScope){
+    const q=Number(x.quantity);if(!Number.isFinite(q))continue;const unit=x.unit||'st';
+    if(!unitGroups.has(unit))unitGroups.set(unit,{unit,planned:0,delivered:0,mounted:0,count:0});
+    const ug=unitGroups.get(unit);ug.planned+=q;ug.count++;if(x.deliveredAt)ug.delivered+=q;if(x.mountedAt)ug.mounted+=q;
+    const ck=`${x.categoryId}|${unit}`;if(!categoryGroups.has(ck))categoryGroups.set(ck,{categoryId:x.categoryId,unit,planned:0,delivered:0,mounted:0});
+    const cg=categoryGroups.get(ck);cg.planned+=q;if(x.deliveredAt)cg.delivered+=q;if(x.mountedAt)cg.mounted+=q;
+    const dk=`${x.date}|${x.categoryId}|${unit}`;if(!dayGroups.has(dk))dayGroups.set(dk,{date:x.date,categoryId:x.categoryId,unit,planned:0,delivered:0,mounted:0});
+    const dg=dayGroups.get(dk);dg.planned+=q;if(x.deliveredAt)dg.delivered+=q;if(x.mountedAt)dg.mounted+=q;
+  }
+  const units=[...unitGroups.values()].sort((a,b)=>a.unit.localeCompare(b.unit,'nl-BE'));
+  $('#quantityUnitKpis').innerHTML=units.length?units.map(g=>`<div class="card quantity-kpi"><div class="quantity-kpi-head"><span class="quantity-kpi-unit">${escapeHtml(g.unit)}</span><span class="quantity-kpi-count">${g.count} vracht${g.count===1?'':'en'} met hoeveelheid</span></div><div class="quantity-kpi-values"><div><span>Gepland</span><strong>${escapeHtml(fmtQty(g.planned,g.unit))}</strong></div><div><span>Geleverd</span><strong>${escapeHtml(fmtQty(g.delivered,g.unit))}</strong></div><div><span>Gemonteerd</span><strong>${escapeHtml(fmtQty(g.mounted,g.unit))}</strong></div></div></div>`).join(''):'<div class="card block"><p class="muted">Nog geen hoeveelheden ingevuld in deze periode.</p></div>';
 
+  const qRows=[...categoryGroups.values()].sort((a,b)=>cat(a.categoryId).name.localeCompare(cat(b.categoryId).name,'nl-BE')||a.unit.localeCompare(b.unit,'nl-BE'));
+  $('#quantityOverview').innerHTML=qRows.length?qRows.map(g=>{const c=cat(g.categoryId),dp=g.planned?Math.min(100,g.delivered/g.planned*100):0,mp=g.planned?Math.min(100,g.mounted/g.planned*100):0;return `<div class="quantity-line"><div class="quantity-line-name"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${c.color};margin-right:6px"></span>${escapeHtml(c.name)} <span class="quantity-line-unit">(${escapeHtml(g.unit)})</span></div><div class="quantity-progress"><div class="quantity-progress-track"><div class="quantity-progress-delivered" style="width:${dp}%"></div><div class="quantity-progress-mounted" style="width:${mp}%"></div></div><div class="quantity-progress-text">${escapeHtml(fmtQty(g.mounted,g.unit))} gemonteerd / ${escapeHtml(fmtQty(g.delivered,g.unit))} geleverd / ${escapeHtml(fmtQty(g.planned,g.unit))} gepland</div></div></div>`}).join(''):'<p class="muted">Nog geen hoeveelheden ingevuld in deze periode.</p>';
 
-  const qtyGroups=new Map();
-  for(const x of horizon){const q=Number(x.quantity);if(!Number.isFinite(q))continue;const key=`${x.categoryId}|${x.unit||'st'}`;if(!qtyGroups.has(key))qtyGroups.set(key,{categoryId:x.categoryId,unit:x.unit||'st',planned:0,delivered:0,mounted:0});const g=qtyGroups.get(key);g.planned+=q;if(x.deliveredAt)g.delivered+=q;if(x.mountedAt)g.mounted+=q}
-  const qRows=[...qtyGroups.values()];
-  $('#quantityOverview').innerHTML=qRows.length?qRows.map(g=>{const c=cat(g.categoryId);const dp=g.planned?Math.min(100,g.delivered/g.planned*100):0,mp=g.planned?Math.min(100,g.mounted/g.planned*100):0;return `<div class="quantity-line"><div class="quantity-line-name"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${c.color};margin-right:6px"></span>${escapeHtml(c.name)} <span class="quantity-line-unit">(${escapeHtml(g.unit)})</span></div><div class="quantity-progress"><div class="quantity-progress-track"><div class="quantity-progress-delivered" style="width:${dp}%"></div><div class="quantity-progress-mounted" style="width:${mp}%"></div></div><div class="quantity-progress-text">${escapeHtml(fmtQty(g.mounted,g.unit))} gemonteerd / ${escapeHtml(fmtQty(g.delivered,g.unit))} geleverd / ${escapeHtml(fmtQty(g.planned,g.unit))} gepland</div></div></div>`}).join(''):'<p class="muted">Nog geen hoeveelheden ingevuld voor de komende planning.</p>';
+  const dayRows=[...dayGroups.values()].sort((a,b)=>a.date.localeCompare(b.date)||cat(a.categoryId).name.localeCompare(cat(b.categoryId).name,'nl-BE'));
+  $('#quantityDayTable').innerHTML=dayRows.length?`<table class="table quantity-day-table"><thead><tr><th>Datum</th><th>Categorie</th><th>Eenheid</th><th>Gepland</th><th>Geleverd</th><th>Gemonteerd</th></tr></thead><tbody>${dayRows.map(g=>{const c=cat(g.categoryId),dt=parseDate(g.date);return `<tr><td><strong>${escapeHtml(dt.toLocaleDateString('nl-BE',{weekday:'short',day:'numeric',month:'short'}))}</strong></td><td><span class="quantity-day-category"><i style="background:${c.color}"></i>${escapeHtml(c.name)}</span></td><td>${escapeHtml(g.unit)}</td><td><strong>${escapeHtml(fmtQty(g.planned,g.unit))}</strong></td><td>${escapeHtml(fmtQty(g.delivered,g.unit))}</td><td>${escapeHtml(fmtQty(g.mounted,g.unit))}</td></tr>`}).join('')}</tbody></table>`:'<p class="muted">Nog geen hoeveelheden ingevuld in deze periode.</p>';
 }
 
 function exportVisiblePlanningPDF(){
@@ -431,7 +514,7 @@ function exportVisiblePlanningPDF(){
 async function renderHistory(){if(!state.projectId)return;const ev=await api(`/api/events?projectId=${encodeURIComponent(state.projectId)}&limit=150`);$('#historyList').innerHTML=ev.length?ev.map(e=>`<div class="history-item"><strong>${escapeHtml(e.message)}</strong><div class="meta">${fmtDateTime(e.at)} · ${escapeHtml(e.user||'')}</div></div>`).join(''):'<p class="muted">Nog geen wijzigingen.</p>'}
 function switchTab(tab){state.tab=tab;$$('.tab-panel').forEach(x=>x.classList.add('hidden'));$(`#tab-${tab}`).classList.remove('hidden');$$('.nav').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));$('#pageTitle').textContent=tab==='planning'?'Dagplanning':tab==='dashboard'?'Dashboard':'Historiek';if(tab==='dashboard')renderDashboard();if(tab==='history')renderHistory()}
 function wire(){
-  $$('.nav').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));$('#projectSelect').onchange=async e=>{state.projectId=e.target.value;updateContext();await refreshAll()};$('#addPlan').onclick=()=>openPlanDialog(null,isoDate(new Date()));$('#planDeliveries').oninput=renderDeliveryDetails;$('#planCategory').onchange=()=>{const u=defaultUnit($('#planCategory').value);for(const code of codesFromInput($('#planDeliveries').value)){draftDeliveryDetails[code]={...(draftDeliveryDetails[code]||{}),unit:u}}renderDeliveryDetails()};$('#exportPdfBtn').onclick=exportVisiblePlanningPDF;$('#manageCategories').onclick=openCategoryDialog;$('#closeCategoryDialog').onclick=()=>$('#categoryDialog').close();$('#closeCategoryDialogBottom').onclick=()=>$('#categoryDialog').close();$('#categoryForm').addEventListener('submit',addCategory);$('#openField').onclick=()=>window.open(`./field.html?project=${encodeURIComponent(state.projectId)}`,'_blank');$('#weekStart').onchange=e=>{setWeek(parseDate(e.target.value));refreshAll()};$('#prevWeek').onclick=()=>{setWeek(plusDays(state.weekStart,-7));refreshAll()};$('#nextWeek').onclick=()=>{setWeek(plusDays(state.weekStart,7));refreshAll()};$('#todayBtn').onclick=()=>{setWeek(mondayOf(new Date()));refreshAll()};$('#planForm').addEventListener('submit',savePlan);$('#closePlanDialog').onclick=()=>$('#planDialog').close();$('#cancelPlan').onclick=()=>$('#planDialog').close();$('#deletePlan').onclick=delPlan;$('#refreshHistory').onclick=renderHistory;$$('#dashboardRange .range-btn').forEach(b=>b.onclick=()=>{state.dashboardRange=b.dataset.range;renderDashboard()});setInterval(()=>{if(state.tab==='planning')refreshAll()},15000)
+  $$('.nav').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));$('#projectSelect').onchange=async e=>{state.projectId=e.target.value;updateContext();await refreshAll()};$('#addPlan').onclick=()=>openPlanDialog(null,isoDate(new Date()));$('#planDeliveries').oninput=renderDeliveryDetails;$('#planCategory').onchange=()=>{const u=defaultUnit($('#planCategory').value);for(const code of codesFromInput($('#planDeliveries').value)){draftDeliveryDetails[code]={...(draftDeliveryDetails[code]||{}),unit:u}}renderDeliveryDetails()};$('#exportPdfBtn').onclick=exportVisiblePlanningPDF;$('#manageCategories').onclick=openCategoryDialog;$('#closeCategoryDialog').onclick=()=>$('#categoryDialog').close();$('#closeCategoryDialogBottom').onclick=()=>$('#categoryDialog').close();$('#categoryForm').addEventListener('submit',addCategory);$('#openField').onclick=()=>window.open(`./field.html?project=${encodeURIComponent(state.projectId)}`,'_blank');$('#weekStart').onchange=e=>{setWeek(parseDate(e.target.value));refreshAll()};$('#prevWeek').onclick=()=>{setWeek(plusDays(state.weekStart,-7));refreshAll()};$('#nextWeek').onclick=()=>{setWeek(plusDays(state.weekStart,7));refreshAll()};$('#todayBtn').onclick=()=>{setWeek(mondayOf(new Date()));refreshAll()};$('#planForm').addEventListener('submit',savePlan);$('#closePlanDialog').onclick=()=>$('#planDialog').close();$('#cancelPlan').onclick=()=>$('#planDialog').close();$('#deletePlan').onclick=delPlan;$('#refreshHistory').onclick=renderHistory;$$('#dashboardRange .range-btn').forEach(b=>b.onclick=()=>{state.dashboardRange=b.dataset.range;renderDashboard()});$$('#dashboardMode .range-btn').forEach(b=>b.onclick=()=>{state.dashboardMode=b.dataset.mode;applyDashboardMode()});setInterval(()=>{if(state.tab==='planning'||state.tab==='dashboard')refreshAll()},15000)
 }
 function escapeHtml(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 boot().catch(e=>{console.error(e);toast(e.message,true)});
